@@ -6,13 +6,20 @@ import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, M
 import { motion } from 'framer-motion';
 
 
+interface ItemContainerProps {
+    index?: number,
+    setItemState?: any,
+    itemsState?: any
+}
+
+
 const appearEffect = {
     hidden: {
         x: "100%",
         opacity: 0
     },
     visible: {
-        x: "00%",
+        x: "0%",
         opacity: 1,
         transition: {
             duration: 5,
@@ -27,7 +34,7 @@ const appearEffect = {
     }
 }
 
-function ItemContainer() {
+function ItemContainer(props : any) {
 
     const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -103,11 +110,16 @@ function ItemContainer() {
         setInputColor(e.target.value)
     }
 
+    const onCanvasClick = () => {
+        props.setItemsState({itemIndex: props.index, isFullList: !props.itemsState.isFullList});
+        setIsZoomed(!isZoomed)
+    }
+
 
     return (
         <div className={styles.container}>
-            <motion.canvas initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity:1}}
-                ref={canvasRef} className={`${styles.canvas} ${styles.big}`} onClick={() => setIsZoomed(!isZoomed)}>
+            <motion.canvas initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity:0}}
+                ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : null}`} onClick={onCanvasClick}>
             </motion.canvas>
             {
                 isZoomed ? 
