@@ -1,58 +1,78 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader } from 'three';
+import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial } from 'three';
+import { motion } from 'framer-motion';
+
+
+const appearEffect = {
+    hidden: {
+        x: "100%",
+        opacity: 0
+    },
+    visible: {
+        x: "00%",
+        opacity: 1,
+        transition: {
+            duration: 5,
+            type: "spring",
+            damping: 25,
+            stiffness: 500
+        }
+    },
+    exit: {
+        x: "100%",
+        opacity: 0
+    }
+}
 
 function ItemContainer() {
 
     const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
+    const [inputColor, setInputColor] = React.useState('red');
     let scene : THREE.Scene = new THREE.Scene();
     let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
     let renderer = React.useRef<THREE.WebGLRenderer>().current;
     let mixer : AnimationMixer;
+    let gltfModel = React.useRef<THREE.Group>();
+    const clock = new Clock();
 
-    const changeRenderer = () => {
-        const sizeScale = isZoomed ? 4 : 2;
-        setIsZoomed(!isZoomed);
-        console.log(renderer)
-        renderer!.setSize(window.innerWidth / sizeScale, window.innerHeight / sizeScale);
-    }
-
-    // React.useEffect(() => {
-    //     scene = new THREE.Scene();
-    //     camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-    // }, [])
+    const animate = () => {
+        let delta = clock.getDelta();
+        requestAnimationFrame(animate);
+        mixer?.update(delta);
+        if (gltfModel.current){
+            gltfModel.current.rotation.y += 0.01
+            gltfModel.current.rotation.x += 0.0
+        }
+        renderer!.render( scene, camera );
+    };
 
     React.useEffect(() => {
         
         renderer = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
-        const clock = new Clock();
-        renderer.setSize(window.innerWidth / (isZoomed ? 2 : 4), window.innerHeight / (isZoomed ? 2 : 4));
+        renderer.setSize(window.innerWidth / (isZoomed ? 1.5 : 4), window.innerHeight / (isZoomed ? 1.5 : 4));
 
         const loader = new GLTFLoader();
-        let gltfModel: THREE.Group;
-
+        
         loader.load(
             'assets/gltf/scene.gltf',
             gltf => {
                 mixer = new AnimationMixer(gltf.scene);
-                gltfModel = gltf.scene;
+                gltfModel.current = gltf.scene;
                 gltf.scene.position.y = -5 ;
                 scene.add(gltf.scene)
                 gltf.animations.forEach(element => {
                     mixer.clipAction(element).play();
                 });
                 gltf.scene.traverse(function (child: any) {
-                    if (child.material)
-                        console.log("child", child);
+
                 });
             }
         )
-        
         const texture = new TextureLoader().load('sky_cloud_evening.jpg');
-        const material = new THREE.MeshBasicMaterial( { map: texture } );
 
         const light = new DirectionalLight();
         light.add(light.target);
@@ -60,27 +80,49 @@ function ItemContainer() {
         light.intensity = 1;
 
         camera.position.z = 10;
+        scene.background = texture;
 
         scene.add(light, light.target);
-        const color = new THREE.Color('blue')
-        scene.background = texture;
-    
-        var animate = function () {
-            let delta = clock.getDelta();
-            requestAnimationFrame( animate );
-            mixer?.update(delta);
-            if (gltfModel){
-                gltfModel.rotation.y += 0.01
-                gltfModel.rotation.x += 0.0
-            }
-            renderer!.render( scene, camera );
-        };
+            
         animate();
     }, [isZoomed])
+    
+
+    const onColorChange = (e : any) => {
+        console.log(e.target.value)
+        const material = new THREE.MeshStandardMaterial( { color: e.target.value} );
+        console.log(gltfModel)
+        gltfModel.current!.traverse(function (child: any) {
+            if (child.material){
+                if (child.name === "Arm_Right_Red_Mat_0" || child.name === "Arm_Left_Red_Mat_0")
+                {
+                    child.material = material
+                }
+            }
+        });
+        setInputColor(e.target.value)
+    }
+
 
     return (
-        <canvas ref={canvasRef} className={styles.container} onClick={() => setIsZoomed(!isZoomed)}>
-        </canvas>
+        <div className={styles.container}>
+            <motion.canvas initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity:1}}
+                ref={canvasRef} className={`${styles.canvas} ${styles.big}`} onClick={() => setIsZoomed(!isZoomed)}>
+            </motion.canvas>
+            {
+                isZoomed ? 
+                <motion.div className={styles.pannel} variants={appearEffect}
+                    initial="hidden" animate="visible" exit="exit">
+                    <input type="color" value={inputColor} onChange={(e) => onColorChange(e)}/>
+                </motion.div>
+                
+                :
+
+                null
+                
+            }
+        </div>
+        
     )
 }
 

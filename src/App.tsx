@@ -9,7 +9,10 @@ function App() {
     <div className={styles.container}>
       <div>Fancy app</div>
       <ItemContainer/>
-      <input type="color"/>
+      <ItemContainer/>
+      <ItemContainer/>
+
+
     </div>
   );
 }
