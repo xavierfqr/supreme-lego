@@ -1,50 +1,103 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Suspense } from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial } from 'three';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 interface ItemContainerProps {
     index?: number,
-    setItemState?: any,
+    setItemsState?: any,
     itemsState?: any
 }
 
 
-const appearEffect = {
+const panelAppear = {
     hidden: {
         x: "100%",
-        opacity: 0
     },
     visible: {
         x: "0%",
-        opacity: 1,
         transition: {
             duration: 5,
             type: "spring",
             damping: 25,
-            stiffness: 500
+            stiffness: 200
         }
     },
     exit: {
         x: "100%",
+        transition: {
+            type: "spring",
+            damping: 25,
+            stiffness: 200
+        }
+    }
+}
+
+const canvasAppear = {
+    hidden: {
+        opacity: 0
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 2
+        }
+    },
+    exit: {
         opacity: 0
     }
 }
 
-function ItemContainer(props : any) {
 
+function ItemContainer(props : ItemContainerProps) {
+
+    const containerRef = React.useRef(null);
+    const [isVisible, setIsVisible] = React.useState(false);
     const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [inputColor, setInputColor] = React.useState('red');
-    let scene : THREE.Scene = new THREE.Scene();
-    let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    let scene : THREE.Scene;
+    let camera : THREE.PerspectiveCamera;
     let renderer = React.useRef<THREE.WebGLRenderer>().current;
     let mixer : AnimationMixer;
     let gltfModel = React.useRef<THREE.Group>();
     const clock = new Clock();
+
+    const callbackFunction = (entries : any) => {
+        const [entry] = entries;
+        console.log("on passe ici")
+        setIsVisible(entry.isIntersecting);
+    }
+
+    const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5
+    }
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(callbackFunction, options);
+        if (containerRef.current) observer.observe(containerRef.current)
+
+        return () => {
+            if (containerRef.current) observer.unobserve(containerRef.current);
+        }
+    }, [containerRef, options])
+
+
+    function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            renderer.setSize(width, height, false);
+        }
+        return needResize;
+    }
 
     const animate = () => {
         let delta = clock.getDelta();
@@ -54,13 +107,25 @@ function ItemContainer(props : any) {
             gltfModel.current.rotation.y += 0.01
             gltfModel.current.rotation.x += 0.0
         }
+        if (resizeRendererToDisplaySize(renderer!)) {
+            const canvas = renderer!.domElement;
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+        }
+
+
         renderer!.render( scene, camera );
     };
 
     React.useEffect(() => {
-        
+        if (!isVisible) {
+            return;
+        }
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
         renderer = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
-        renderer.setSize(window.innerWidth / (isZoomed ? 1.5 : 4), window.innerHeight / (isZoomed ? 1.5 : 4));
+        //renderer.setSize(window.innerWidth / (resizeCanvas ? 1.5 : 4), window.innerHeight / (resizeCanvas ? 1.5 : 4));
 
         const loader = new GLTFLoader();
         
@@ -90,15 +155,13 @@ function ItemContainer(props : any) {
         scene.background = texture;
 
         scene.add(light, light.target);
-            
+
         animate();
-    }, [isZoomed])
+    }, [isVisible])
     
 
     const onColorChange = (e : any) => {
-        console.log(e.target.value)
         const material = new THREE.MeshStandardMaterial( { color: e.target.value} );
-        console.log(gltfModel)
         gltfModel.current!.traverse(function (child: any) {
             if (child.material){
                 if (child.name === "Arm_Right_Red_Mat_0" || child.name === "Arm_Left_Red_Mat_0")
@@ -112,28 +175,29 @@ function ItemContainer(props : any) {
 
     const onCanvasClick = () => {
         props.setItemsState({itemIndex: props.index, isFullList: !props.itemsState.isFullList});
-        setIsZoomed(!isZoomed)
+        setIsZoomed(!isZoomed);
     }
 
-
     return (
-        <div className={styles.container}>
-            <motion.canvas initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity:0}}
-                ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : null}`} onClick={onCanvasClick}>
+        <Suspense fallback={<div>loading</div>}>
+            <div className={styles.container} ref={containerRef}>
+            <motion.canvas variants={canvasAppear}
+                initial="hidden" animate="visible" exit="exit"
+                ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} onClick={onCanvasClick}>
             </motion.canvas>
+            <AnimatePresence>
             {
                 isZoomed ? 
-                <motion.div className={styles.pannel} variants={appearEffect}
+                <motion.div className={styles.pannel} variants={panelAppear}
                     initial="hidden" animate="visible" exit="exit">
                     <input type="color" value={inputColor} onChange={(e) => onColorChange(e)}/>
                 </motion.div>
-                
                 :
-
                 null
-                
             }
+            </AnimatePresence>
         </div>
+        </Suspense>
         
     )
 }

@@ -12,6 +12,7 @@ const ItemsWrapper = ({children} : any) => {
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
 
   const childrenWithProps = React.Children.map(children, (child, index) => {
+    console.log(children.length)
     if (itemsState.isFullList) {
       return React.cloneElement(child, {index, itemsState, setItemsState})
     }
@@ -27,6 +28,10 @@ function App() {
   return (
     <div className={styles.container}>
       <ItemsWrapper>
+        <ItemContainer/>
+        <ItemContainer/>
+        <ItemContainer/>
+        <ItemContainer/>
         <ItemContainer/>
         <ItemContainer/>
         <ItemContainer/>

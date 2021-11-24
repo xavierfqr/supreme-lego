@@ -9124,6 +9124,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-observer-api@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-observer-api/-/react-observer-api-1.0.12.tgz#6a0db4facbb4984650f0dbee89233f0a7035dc16"
+  integrity sha512-HxAu2t70xXN44FJbXjFAnv4S/uNIIrm0NZEAnu+fbmWcnFtRcdgPhM6Kh26pnzdzWuCT0G5gDkhO5hSF13IJGQ==
+
 react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
