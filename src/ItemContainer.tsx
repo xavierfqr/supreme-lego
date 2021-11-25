@@ -51,6 +51,8 @@ const canvasAppear = {
     }
 }
 
+type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis';
+
 
 function ItemContainer(props : ItemContainerProps) {
 
@@ -58,7 +60,7 @@ function ItemContainer(props : ItemContainerProps) {
     const [isVisible, setIsVisible] = React.useState(false);
     const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
-    const [inputColor, setInputColor] = React.useState('red');
+    const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
     let scene : THREE.Scene;
     let camera : THREE.PerspectiveCamera;
     let renderer = React.useRef<THREE.WebGLRenderer>().current;
@@ -75,7 +77,7 @@ function ItemContainer(props : ItemContainerProps) {
     const options = {
         root: null,
         rootMargin: "0px",
-        threshold: 0.5
+        threshold: 0
     }
 
     React.useEffect(() => {
@@ -108,9 +110,11 @@ function ItemContainer(props : ItemContainerProps) {
             gltfModel.current.rotation.x += 0.0
         }
         if (resizeRendererToDisplaySize(renderer!)) {
-            const canvas = renderer!.domElement;
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            camera.updateProjectionMatrix();
+            const canvas = canvasRef.current;
+            if (canvas){
+                camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                camera.updateProjectionMatrix();
+            }
         }
 
 
@@ -160,17 +164,25 @@ function ItemContainer(props : ItemContainerProps) {
     }, [isVisible])
     
 
-    const onColorChange = (e : any) => {
+
+    const onColorChange = (e : any, item: ItemType) => {
         const material = new THREE.MeshStandardMaterial( { color: e.target.value} );
         gltfModel.current!.traverse(function (child: any) {
             if (child.material){
-                if (child.name === "Arm_Right_Red_Mat_0" || child.name === "Arm_Left_Red_Mat_0")
-                {
+                console.log(child.name)
+                if (item === 'arms' && (child.name === "Arm_Right_Red_Mat_0" || child.name === "Arm_Left_Red_Mat_0"))
                     child.material = material
-                }
+                else if (item === 'legs' && (child.name === "Leg1_Blue_Mat_0" || child.name === "Leg2_Blue_Mat_0"))
+                    child.material = material
+                else if (item === 'shirt' && child.name === "polySurface1_Red_Mat_0")
+                    child.material = material
+                else if (item === 'pelvis' && child.name === "Pelvis1_Blue_Mat_0")
+                    child.material = material
             }
         });
-        setInputColor(e.target.value)
+        const newInputColors = {...inputColor}
+        newInputColors[item] = e.target.color;
+        setInputColor(newInputColors);
     }
 
     const onCanvasClick = () => {
@@ -190,7 +202,14 @@ function ItemContainer(props : ItemContainerProps) {
                 isZoomed ? 
                 <motion.div className={styles.pannel} variants={panelAppear}
                     initial="hidden" animate="visible" exit="exit">
-                    <input type="color" value={inputColor} onChange={(e) => onColorChange(e)}/>
+                    <label>Change arms color</label>
+                    <input type="color" value={inputColor.arms} onChange={(e) => onColorChange(e, 'arms')}/>
+                    <label>Change legs color</label>
+                    <input type="color" value={inputColor.legs} onChange={(e) => onColorChange(e, 'legs')}/>
+                    <label>Change shirt color</label>
+                    <input type="color" value={inputColor.shirt} onChange={(e) => onColorChange(e, 'shirt')}/>
+                    <label>Change pelvis color</label>
+                    <input type="color" value={inputColor.pelvis} onChange={(e) => onColorChange(e, 'pelvis')}/>
                 </motion.div>
                 :
                 null
