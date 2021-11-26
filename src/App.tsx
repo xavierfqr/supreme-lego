@@ -10,13 +10,19 @@ interface itemsStateType {
 
 
 
-const ItemsWrapper = ({children, setRef, itemsCount} : any) => {
+const ItemsWrapper = ({children, setRef, itemsCount, setItemsCount} : any) => {
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
+  React.useEffect(() => {
+    if (itemsState.isFullList) {
+      setItemsCount(3);
+    }
+  }, [itemsState.isFullList])
 
   const childrenWithProps = React.Children.map(children, (child, index) => {
     if (index >= itemsCount) return;
     if (itemsState.isFullList && index <= itemsCount - 1) {
       if (itemsCount - 1 === index) {
+        console.log("set ref")
         return React.cloneElement(child, {index, itemsState, setItemsState, ref:setRef})
       }
       else 
@@ -48,12 +54,14 @@ function App() {
 
   const setRef = (ref : any) => {
     if (lastChildRef.current) observer.unobserve(lastChildRef.current);
-    lastChildRef.current = ref
+    lastChildRef.current = ref;
+    if (lastChildRef.current && observer) observer.observe(lastChildRef.current)
   }
 
   React.useEffect(() => {
     observer = new IntersectionObserver(callbackFunction, options);
-    if (lastChildRef.current) observer.observe(lastChildRef.current)
+    if (lastChildRef.current) observer?.observe(lastChildRef.current)
+    
 
     return () => {
         if (lastChildRef.current) observer.unobserve(lastChildRef.current);
@@ -63,7 +71,7 @@ function App() {
   return (
     <div className={styles.container}>
         <img src="assets/Red_LEGO.png"/>
-      <ItemsWrapper setRef={setRef} itemsCount={itemsCount}>
+      <ItemsWrapper setRef={setRef} itemsCount={itemsCount} setItemsCount={setItemsCount}>
         <ItemContainer/>
         <ItemContainer/>
         <ItemContainer/>
