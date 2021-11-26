@@ -54,10 +54,10 @@ const canvasAppear = {
 type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis';
 
 
-function ItemContainer(props : ItemContainerProps) {
+const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) => {
 
     const containerRef = React.useRef(null);
-    const [isVisible, setIsVisible] = React.useState(false);
+    //const [isVisible, setIsVisible] = React.useState(false);
     const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
@@ -68,26 +68,26 @@ function ItemContainer(props : ItemContainerProps) {
     let gltfModel = React.useRef<THREE.Group>();
     const clock = new Clock();
 
-    const callbackFunction = (entries : any) => {
-        const [entry] = entries;
-        console.log("on passe ici")
-        setIsVisible(entry.isIntersecting);
-    }
+    // const callbackFunction = (entries : any) => {
+    //     const [entry] = entries;
+    //     setIsVisible(entry.isIntersecting);
+    //     console.log("is Visible")
+    // }
 
-    const options = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0
-    }
+    // const options = {
+    //     root: null,
+    //     rootMargin: "0px",
+    //     threshold: 0
+    // }
 
-    React.useEffect(() => {
-        const observer = new IntersectionObserver(callbackFunction, options);
-        if (containerRef.current) observer.observe(containerRef.current)
+    // React.useEffect(() => {
+    //     const observer = new IntersectionObserver(callbackFunction, options);
+    //     if (containerRef.current) observer.observe(containerRef.current)
 
-        return () => {
-            if (containerRef.current) observer.unobserve(containerRef.current);
-        }
-    }, [containerRef, options])
+    //     return () => {
+    //         if (containerRef.current) observer.unobserve(containerRef.current);
+    //     }
+    // }, [containerRef, options])
 
 
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
@@ -122,9 +122,6 @@ function ItemContainer(props : ItemContainerProps) {
     };
 
     React.useEffect(() => {
-        if (!isVisible) {
-            return;
-        }
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
@@ -161,7 +158,7 @@ function ItemContainer(props : ItemContainerProps) {
         scene.add(light, light.target);
 
         animate();
-    }, [isVisible])
+    }, [])
     
 
 
@@ -169,7 +166,6 @@ function ItemContainer(props : ItemContainerProps) {
         const material = new THREE.MeshStandardMaterial( { color: e.target.value} );
         gltfModel.current!.traverse(function (child: any) {
             if (child.material){
-                console.log(child.name)
                 if (item === 'arms' && (child.name === "Arm_Right_Red_Mat_0" || child.name === "Arm_Left_Red_Mat_0"))
                     child.material = material
                 else if (item === 'legs' && (child.name === "Leg1_Blue_Mat_0" || child.name === "Leg2_Blue_Mat_0"))
@@ -192,7 +188,7 @@ function ItemContainer(props : ItemContainerProps) {
 
     return (
         <Suspense fallback={<div>loading</div>}>
-            <div className={styles.container} ref={containerRef}>
+            <div className={styles.container} ref={ref}>
             <motion.canvas variants={canvasAppear}
                 initial="hidden" animate="visible" exit="exit"
                 ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} onClick={onCanvasClick}>
@@ -219,6 +215,6 @@ function ItemContainer(props : ItemContainerProps) {
         </Suspense>
         
     )
-}
+})
 
 export default ItemContainer

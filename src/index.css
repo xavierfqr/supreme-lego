@@ -5,3 +5,10 @@ body {
     sans-serif;
   background-color: white;
 }
+
+img {
+  position: absolute;
+  width: 10rem;
+  top: 30vh;
+  left: 0;
+}
