@@ -17,7 +17,6 @@ const ItemsWrapper = ({children, setRef, itemsCount} : any) => {
     if (index >= itemsCount) return;
     if (itemsState.isFullList && index <= itemsCount - 1) {
       if (itemsCount - 1 === index) {
-        console.log(index)
         return React.cloneElement(child, {index, itemsState, setItemsState, ref:setRef})
       }
       else 
@@ -37,7 +36,6 @@ function App() {
 
   const [itemsCount, setItemsCount] = React.useState(3);
   const callbackFunction = (entries : any) => {
-console.log(entries)
     const [entry] = entries;
     if (entry.isIntersecting) setItemsCount(count => count + 3);
   }

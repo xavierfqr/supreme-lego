@@ -68,28 +68,6 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
     let gltfModel = React.useRef<THREE.Group>();
     const clock = new Clock();
 
-    // const callbackFunction = (entries : any) => {
-    //     const [entry] = entries;
-    //     setIsVisible(entry.isIntersecting);
-    //     console.log("is Visible")
-    // }
-
-    // const options = {
-    //     root: null,
-    //     rootMargin: "0px",
-    //     threshold: 0
-    // }
-
-    // React.useEffect(() => {
-    //     const observer = new IntersectionObserver(callbackFunction, options);
-    //     if (containerRef.current) observer.observe(containerRef.current)
-
-    //     return () => {
-    //         if (containerRef.current) observer.unobserve(containerRef.current);
-    //     }
-    // }, [containerRef, options])
-
-
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
@@ -187,8 +165,7 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
     }
 
     return (
-        <Suspense fallback={<div>loading</div>}>
-            <div className={styles.container} ref={ref}>
+        <div className={styles.container} ref={ref}>
             <motion.canvas variants={canvasAppear}
                 initial="hidden" animate="visible" exit="exit"
                 ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} onClick={onCanvasClick}>
@@ -212,8 +189,6 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
             }
             </AnimatePresence>
         </div>
-        </Suspense>
-        
     )
 })
 
