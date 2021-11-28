@@ -22,7 +22,6 @@ const ItemsWrapper = ({children, setRef, itemsCount, setItemsCount} : any) => {
     if (index >= itemsCount) return;
     if (itemsState.isFullList && index <= itemsCount - 1) {
       if (itemsCount - 1 === index) {
-        console.log("set ref")
         return React.cloneElement(child, {index, itemsState, setItemsState, ref:setRef})
       }
       else 
@@ -43,7 +42,7 @@ function App() {
   const [itemsCount, setItemsCount] = React.useState(3);
   const callbackFunction = (entries : any) => {
     const [entry] = entries;
-    if (entry.isIntersecting) setItemsCount(count => count + 3);
+    if (entry.isIntersecting) setItemsCount(count => count + 1);
   }
 
   const options = {
@@ -70,7 +69,7 @@ function App() {
 
   return (
     <div className={styles.container}>
-        <img src="assets/Red_LEGO.png"/>
+        {/* <img src="assets/Red_LEGO.png"/> */}
       <ItemsWrapper setRef={setRef} itemsCount={itemsCount} setItemsCount={setItemsCount}>
         <ItemContainer/>
         <ItemContainer/>

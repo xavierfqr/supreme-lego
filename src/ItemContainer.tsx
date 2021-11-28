@@ -54,16 +54,15 @@ const canvasAppear = {
 type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis';
 
 
-const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) => {
+const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((props : ItemContainerProps, ref) => {
 
-    const containerRef = React.useRef(null);
-    //const [isVisible, setIsVisible] = React.useState(false);
-    const [isZoomed, setIsZoomed] = React.useState(false);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+    const [isZoomed, setIsZoomed] = React.useState(false);
     const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
     let scene : THREE.Scene;
     let camera : THREE.PerspectiveCamera;
-    let renderer = React.useRef<THREE.WebGLRenderer>().current;
+    let renderer = React.useRef<THREE.WebGLRenderer>();
     let mixer : AnimationMixer;
     let gltfModel = React.useRef<THREE.Group>();
     const clock = new Clock();
@@ -87,7 +86,7 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
             gltfModel.current.rotation.y += 0.01
             gltfModel.current.rotation.x += 0.0
         }
-        if (resizeRendererToDisplaySize(renderer!)) {
+        if (resizeRendererToDisplaySize(renderer.current!)) {
             const canvas = canvasRef.current;
             if (canvas){
                 camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -96,15 +95,13 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
         }
 
 
-        renderer!.render( scene, camera );
+        renderer.current!.render( scene, camera );
     };
 
     React.useEffect(() => {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-        renderer = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
-        //renderer.setSize(window.innerWidth / (resizeCanvas ? 1.5 : 4), window.innerHeight / (resizeCanvas ? 1.5 : 4));
+        renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
 
         const loader = new GLTFLoader();
         
@@ -173,17 +170,20 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
             <AnimatePresence>
             {
                 isZoomed ? 
-                <motion.div className={styles.pannel} variants={panelAppear}
-                    initial="hidden" animate="visible" exit="exit">
-                    <label>Change arms color</label>
-                    <input type="color" value={inputColor.arms} onChange={(e) => onColorChange(e, 'arms')}/>
-                    <label>Change legs color</label>
-                    <input type="color" value={inputColor.legs} onChange={(e) => onColorChange(e, 'legs')}/>
-                    <label>Change shirt color</label>
-                    <input type="color" value={inputColor.shirt} onChange={(e) => onColorChange(e, 'shirt')}/>
-                    <label>Change pelvis color</label>
-                    <input type="color" value={inputColor.pelvis} onChange={(e) => onColorChange(e, 'pelvis')}/>
-                </motion.div>
+                <div>
+                    <motion.div className={styles.pannel} variants={panelAppear}
+                            initial="hidden" animate="visible" exit="exit">
+                            <label>Change arms color</label>
+                            <input type="color" value={inputColor.arms} onChange={(e) => onColorChange(e, 'arms')}/>
+                            <label>Change legs color</label>
+                            <input type="color" value={inputColor.legs} onChange={(e) => onColorChange(e, 'legs')}/>
+                            <label>Change shirt color</label>
+                            <input type="color" value={inputColor.shirt} onChange={(e) => onColorChange(e, 'shirt')}/>
+                            <label>Change pelvis color</label>
+                            <input type="color" value={inputColor.pelvis} onChange={(e) => onColorChange(e, 'pelvis')}/>
+                    </motion.div>
+                </div>
+                
                 :
                 null
             }
