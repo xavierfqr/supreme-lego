@@ -2,82 +2,113 @@ import React from 'react';
 import * as THREE from 'three';
 import styles from './App.module.css';
 import ItemContainer from './ItemContainer';
+import HiddenCanvas from './components/HiddenCanvas';
 
 interface itemsStateType {
   itemIndex: number,
   isFullList: boolean
 }
 
-const models = [
-  'character_male', 
-  'brick'
-];
-
-const ItemsWrapper = ({children, setRef, itemsCount, setItemsCount} : any) => {
-  const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
-  React.useEffect(() => {
-    if (itemsState.isFullList) {
-      setItemsCount(3);
-    }
-  }, [itemsState.isFullList])
-
-  const childrenWithProps = React.Children.map(children, (child, index) => {
-    if (index >= itemsCount) return;
-    const model = models[index];
-    if (itemsState.isFullList && index <= itemsCount - 1) {
-      if (itemsCount - 1 === index) {
-        return React.cloneElement(child, {index, itemsState, setItemsState, model, ref:setRef});
-      }
-      else 
-        return React.cloneElement(child, {index, itemsState, setItemsState, model});
-    }
-    else if (index === itemsState.itemIndex) {
-      return React.cloneElement(child, {index, itemsState, setItemsState, model})
-    }
-  })
-
-  return (<div>{childrenWithProps}</div>)
+export interface Models {
+  index: number,
+  name: string
 }
 
+
 function App() {
-  let lastChildRef = React.useRef(null)
+  let lastChildRef = React.useRef<HTMLCanvasElement | null>(null)
+  const modelsRef = React.useRef<Array<HTMLCanvasElement | null>>([])
+  const [models, setModels] = React.useState(
+    [
+      {index: 0, name: 'character_male'},
+      {index: 1, name: 'character_male'},
+      {index: 2, name: 'character_male'},
+      {index: 3, name: 'character_male'},
+      {index: 4, name: 'character_male'},
+      {index: 5, name: 'character_male'},
+      {index: 6, name: 'character_male'},
+      {index: 7, name: 'character_male'},
+
+    ]
+  )
+  const [itemsCount, setItemsCount] = React.useState(3);
+  const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
+
   let observer : IntersectionObserver;
 
-  const [itemsCount, setItemsCount] = React.useState(3);
   const callbackFunction = (entries : any) => {
     const [entry] = entries;
-    if (entry.isIntersecting) setItemsCount(count => count + 1);
+    if (entry.isIntersecting) {
+      if (lastChildRef.current) observer.unobserve(lastChildRef.current);
+      lastChildRef.current = modelsRef.current[itemsCount];
+      if (lastChildRef.current) observer.observe(lastChildRef.current)
+      console.log(itemsCount)
+      setItemsCount(count => count + 1);
+    }
   }
 
   const options = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.8
+    threshold: 1
   }
 
-  const setRef = (ref : any) => {
-    if (lastChildRef.current) observer.unobserve(lastChildRef.current);
-    lastChildRef.current = ref;
-    if (lastChildRef.current && observer) observer.observe(lastChildRef.current)
+
+
+  const setRef = (ref : any, index: number) => {
+    modelsRef.current[index] = ref;
+    if (index === itemsCount - 1){
+      lastChildRef.current = ref;
+    }
   }
 
   React.useEffect(() => {
     observer = new IntersectionObserver(callbackFunction, options);
     if (lastChildRef.current) observer?.observe(lastChildRef.current)
-    
 
     return () => {
         if (lastChildRef.current) observer.unobserve(lastChildRef.current);
     }
 }, [lastChildRef, options])
 
+  React.useEffect(() => {
+    models.forEach((model) => {
+      if (model.index >= itemsCount){
+        modelsRef.current[model.index]!.style.display = 'none';
+      }
+      else {
+        modelsRef.current[model.index]!.style.display = 'block';
+      }
+    })
+  }, [itemsCount])
+  
+  React.useEffect(() => {
+    if (itemsState.isFullList){
+      setItemsCount(3);
+    }
+    console.log(models)
+  }, [itemsState.isFullList])
+
+  const onCanvasClick = (index: number) => () => {
+    setItemsState({itemIndex: index, isFullList: false})
+  }
+
+
   return (
     <div className={styles.container}>
-        {/* <img src="assets/Red_LEGO.png"/> */}
-      <ItemsWrapper setRef={setRef} itemsCount={itemsCount} setItemsCount={setItemsCount}>
-        <ItemContainer/>
-        <ItemContainer/>
-      </ItemsWrapper>
+      {itemsState.isFullList ?
+      <div>
+        {
+          models.map((model, index) => {
+            return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
+          })
+        }
+        <HiddenCanvas models={models} modelsRef={modelsRef}></HiddenCanvas>
+      </div>
+      :
+      <ItemContainer model={models[itemsState.itemIndex]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
+
+    }
     </div>
   );
 }

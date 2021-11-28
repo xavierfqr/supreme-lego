@@ -1,16 +1,17 @@
-import React, { ChangeEvent, Suspense } from 'react';
+import React from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial } from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
+import {Models} from './App';
 
 
 interface ItemContainerProps {
     index?: number,
     setItemsState?: any,
     itemsState?: any,
-    model?: string
+    model: Models
 }
 
 
@@ -59,7 +60,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
 
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-    const [isZoomed, setIsZoomed] = React.useState(false);
+    const [isZoomed, setIsZoomed] = React.useState(!props.itemsState.isFullList);
     const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
     let scene : THREE.Scene;
     let camera : THREE.PerspectiveCamera;
@@ -102,11 +103,15 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     React.useEffect(() => {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-        renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
 
+        renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true, preserveDrawingBuffer: true} );
+        
+
+
+        console.log(props.model)
         const loader = new GLTFLoader();
         loader.load(
-            `assets/gltf/${props.model}/scene.gltf`,
+            `assets/gltf/${props.model.name}/scene.gltf`,
             gltf => {
                 mixer = new AnimationMixer(gltf.scene);
                 gltfModel.current = gltf.scene;
@@ -115,9 +120,16 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                 gltf.animations.forEach(element => {
                     mixer.clipAction(element).play();
                 });
-                gltf.scene.traverse(function (child: any) {
+            }
+        )
 
-                });
+        loader.load(
+            `assets/gltf/${props.model.name}/scene.gltf`,
+            gltf => {
+                mixer = new AnimationMixer(gltf.scene);
+                gltf.scene.position.y = -5 ;
+                gltf.scene.position.x = -5 ;
+                scene.add(gltf.scene)
             }
         )
         const texture = new TextureLoader().load('sky_cloud_evening.jpg');
@@ -157,7 +169,12 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     }
 
     const onCanvasClick = () => {
-        props.setItemsState({itemIndex: props.index, isFullList: !props.itemsState.isFullList});
+        props.setItemsState({itemIndex: 0, isFullList: !props.itemsState.isFullList});
+        setIsZoomed(!isZoomed);
+    }
+
+    const onArrowClick = () => {
+        props.setItemsState({itemIndex: props.index! + 1, isFullList: false});
         setIsZoomed(!isZoomed);
     }
 
@@ -182,6 +199,8 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                             <label>Change pelvis color</label>
                             <input type="color" value={inputColor.pelvis} onChange={(e) => onColorChange(e, 'pelvis')}/>
                     </motion.div>
+                    <button onClick={() => onArrowClick()}>Next</button>
+
                 </div>
                 
                 :
