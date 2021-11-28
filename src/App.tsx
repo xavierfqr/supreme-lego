@@ -8,7 +8,10 @@ interface itemsStateType {
   isFullList: boolean
 }
 
-
+const models = [
+  'character_male', 
+  'brick'
+];
 
 const ItemsWrapper = ({children, setRef, itemsCount, setItemsCount} : any) => {
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
@@ -20,15 +23,16 @@ const ItemsWrapper = ({children, setRef, itemsCount, setItemsCount} : any) => {
 
   const childrenWithProps = React.Children.map(children, (child, index) => {
     if (index >= itemsCount) return;
+    const model = models[index];
     if (itemsState.isFullList && index <= itemsCount - 1) {
       if (itemsCount - 1 === index) {
-        return React.cloneElement(child, {index, itemsState, setItemsState, ref:setRef})
+        return React.cloneElement(child, {index, itemsState, setItemsState, model, ref:setRef});
       }
       else 
-        return React.cloneElement(child, {index, itemsState, setItemsState})
+        return React.cloneElement(child, {index, itemsState, setItemsState, model});
     }
     else if (index === itemsState.itemIndex) {
-      return React.cloneElement(child, {index, itemsState, setItemsState})
+      return React.cloneElement(child, {index, itemsState, setItemsState, model})
     }
   })
 
@@ -71,11 +75,6 @@ function App() {
     <div className={styles.container}>
         {/* <img src="assets/Red_LEGO.png"/> */}
       <ItemsWrapper setRef={setRef} itemsCount={itemsCount} setItemsCount={setItemsCount}>
-        <ItemContainer/>
-        <ItemContainer/>
-        <ItemContainer/>
-        <ItemContainer/>
-        <ItemContainer/>
         <ItemContainer/>
         <ItemContainer/>
       </ItemsWrapper>
