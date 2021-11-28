@@ -8,6 +8,7 @@
         {
             "name" : "Scene",
             "nodes" : [
+                0,
                 8
             ]
         }
@@ -15,12 +16,19 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Base.002"
+            "name" : "pCylinder4_lambert1_0",
+            "scale" : [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "translation" : [
+                0,
+                4.820000171661377,
+                3.6500000953674316
+            ]
         },
         {
-            "children" : [
-                0
-            ],
             "name" : "Object_11.001",
             "scale" : [
                 0.987500011920929,
@@ -121,21 +129,21 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "SOLID-WHITE.001",
+            "name" : "lambert1.002",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.9960780143737793,
-                    0.9960780143737793,
-                    0.9960780143737793,
+                    0.4000000059604645,
+                    0.4000000059604645,
+                    0.4000000059604645,
                     1
                 ],
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.6636414527893066
+                "roughnessFactor" : 0.6000000238418579
             }
         },
         {
             "doubleSided" : true,
-            "name" : "SOLID-WHITE_0.001",
+            "name" : "SOLID-WHITE_0.002",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.9960780143737793,
@@ -150,27 +158,28 @@
     ],
     "meshes" : [
         {
-            "name" : "Base.002",
+            "name" : "pCylinder4_lambert1_0",
             "primitives" : [
                 {
                     "attributes" : {
                         "POSITION" : 0,
-                        "NORMAL" : 1
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
                     },
-                    "indices" : 2,
+                    "indices" : 3,
                     "material" : 0
                 }
             ]
         },
         {
-            "name" : "Base.003",
+            "name" : "Base.005",
             "primitives" : [
                 {
                     "attributes" : {
-                        "POSITION" : 3,
-                        "NORMAL" : 4
+                        "POSITION" : 4,
+                        "NORMAL" : 5
                     },
-                    "indices" : 5,
+                    "indices" : 6,
                     "material" : 1
                 }
             ]
@@ -180,35 +189,41 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 193,
+            "count" : 121,
             "max" : [
-                10,
-                24,
-                10
+                5,
+                4.300000190734863,
+                -2.322014331817627
             ],
             "min" : [
-                -10,
-                -4,
-                -10
+                -5,
+                -2,
+                -12.322013854980469
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 193,
+            "count" : 121,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
-            "componentType" : 5123,
-            "count" : 516,
-            "type" : "SCALAR"
+            "componentType" : 5126,
+            "count" : 121,
+            "type" : "VEC2"
         },
         {
             "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 276,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 4,
             "componentType" : 5126,
-            "count" : 3647,
+            "count" : 3649,
             "max" : [
                 2.5,
                 -3.799999952316284,
@@ -222,13 +237,13 @@
             "type" : "VEC3"
         },
         {
-            "bufferView" : 4,
+            "bufferView" : 5,
             "componentType" : 5126,
-            "count" : 3647,
+            "count" : 3649,
             "type" : "VEC3"
         },
         {
-            "bufferView" : 5,
+            "bufferView" : 6,
             "componentType" : 5123,
             "count" : 13629,
             "type" : "SCALAR"
@@ -237,38 +252,43 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 2316,
+            "byteLength" : 1452,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 2316,
-            "byteOffset" : 2316
+            "byteLength" : 1452,
+            "byteOffset" : 1452
         },
         {
             "buffer" : 0,
-            "byteLength" : 1032,
-            "byteOffset" : 4632
+            "byteLength" : 968,
+            "byteOffset" : 2904
         },
         {
             "buffer" : 0,
-            "byteLength" : 43764,
-            "byteOffset" : 5664
+            "byteLength" : 552,
+            "byteOffset" : 3872
         },
         {
             "buffer" : 0,
-            "byteLength" : 43764,
-            "byteOffset" : 49428
+            "byteLength" : 43788,
+            "byteOffset" : 4424
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 43788,
+            "byteOffset" : 48212
         },
         {
             "buffer" : 0,
             "byteLength" : 27258,
-            "byteOffset" : 93192
+            "byteOffset" : 92000
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 120452,
+            "byteLength" : 119260,
             "uri" : "scene.bin"
         }
     ]

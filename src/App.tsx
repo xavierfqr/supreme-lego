@@ -9,28 +9,51 @@ interface itemsStateType {
   isFullList: boolean
 }
 
-export interface Models {
+export interface ModelType {
   index: number,
-  name: string
+  name: string,
+  parts: ModelPartType[]
 }
+
+interface ModelPartType {
+  label: ItemType,
+  tags: string[]
+}
+
+export type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis';
+
+
+
+const modelsData : ModelType[] = [
+  {
+    index: 0,
+    name: 'character_male',
+    parts: [
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+    ]
+  },
+  {
+    index: 1,
+    name: 'character_female',
+    parts: [
+      { label: 'shirt', tags: [ "cos_leia_smooth_plastic_legoMAT_0" ] },
+      { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ] },
+      { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ] },
+      { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0"  ] },
+    ]
+  },
+  // 'brick',
+  // 'brick_thin'
+];
 
 
 function App() {
   let lastChildRef = React.useRef<HTMLCanvasElement | null>(null)
   const modelsRef = React.useRef<Array<HTMLCanvasElement | null>>([])
-  const [models, setModels] = React.useState(
-    [
-      {index: 0, name: 'character_male'},
-      {index: 1, name: 'character_male'},
-      {index: 2, name: 'character_male'},
-      {index: 3, name: 'character_male'},
-      {index: 4, name: 'character_male'},
-      {index: 5, name: 'character_male'},
-      {index: 6, name: 'character_male'},
-      {index: 7, name: 'character_male'},
-
-    ]
-  )
+  const [models, setModels] = React.useState(modelsData)
   const [itemsCount, setItemsCount] = React.useState(3);
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
 
@@ -52,8 +75,6 @@ function App() {
     rootMargin: "0px",
     threshold: 1
   }
-
-
 
   const setRef = (ref : any, index: number) => {
     modelsRef.current[index] = ref;

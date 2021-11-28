@@ -2,10 +2,10 @@ import React from 'react'
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DirectionalLight, AnimationMixer, Clock, TextureLoader } from 'three';
-import { Models } from '../App';
+import { ModelType } from '../App';
 
 interface HiddenCanvasProps {
-    models: Models[],
+    models: ModelType[],
     modelsRef: any
 }
 

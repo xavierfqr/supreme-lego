@@ -1,0 +1,1108 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.6.16",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                35
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "caderaleia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                0
+            ],
+            "name" : "caderaleia"
+        },
+        {
+            "mesh" : 1,
+            "name" : "cos_leia_smooth_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                2
+            ],
+            "name" : "cos_leia_smooth"
+        },
+        {
+            "mesh" : 2,
+            "name" : "cap_leia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                4
+            ],
+            "name" : "cap_leia",
+            "translation" : [
+                0,
+                -0.8150416612625122,
+                0
+            ]
+        },
+        {
+            "mesh" : 3,
+            "name" : "perrucaLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                6
+            ],
+            "name" : "perrucaLeia",
+            "scale" : [
+                0.9800000190734863,
+                0.9800000190734863,
+                0.9800000190734863
+            ],
+            "translation" : [
+                6.120443140389398e-05,
+                -0.8408036231994629,
+                -0.0012307885335758328
+            ]
+        },
+        {
+            "children" : [
+                5,
+                7
+            ],
+            "name" : "ctrl_head",
+            "translation" : [
+                0,
+                0.8150416612625122,
+                0
+            ]
+        },
+        {
+            "mesh" : 4,
+            "name" : "brasEsqLeiaSmooth_plastic_legoMAT_0"
+        },
+        {
+            "mesh" : 5,
+            "name" : "maEsqLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                10
+            ],
+            "name" : "maEsqLeia",
+            "rotation" : [
+                0.006983906961977482,
+                0.08202966302633286,
+                0.9930093884468079,
+                0.0845852643251419
+            ],
+            "scale" : [
+                -1,
+                -1,
+                -1
+            ],
+            "translation" : [
+                -0.7451642751693726,
+                0.30183836817741394,
+                -0.1364753544330597
+            ]
+        },
+        {
+            "children" : [
+                11
+            ],
+            "name" : "ctrlLeftHand",
+            "rotation" : [
+                -0.006983906961977482,
+                -0.08202966302633286,
+                -0.9930093884468079,
+                0.0845852643251419
+            ],
+            "scale" : [
+                -1,
+                -1,
+                -1
+            ],
+            "translation" : [
+                0.7829999923706055,
+                -0.1889999955892563,
+                -0.10599999874830246
+            ]
+        },
+        {
+            "children" : [
+                9,
+                12
+            ],
+            "name" : "brasEsqLeiaSmooth",
+            "rotation" : [
+                0,
+                0,
+                0.6421189308166504,
+                0.7666050791740417
+            ],
+            "translation" : [
+                0.36022675037384033,
+                -0.6235825419425964,
+                0
+            ]
+        },
+        {
+            "children" : [
+                13
+            ],
+            "name" : "ctrlLeftArm",
+            "rotation" : [
+                0,
+                0,
+                -0.6421189308166504,
+                0.7666050791740417
+            ],
+            "translation" : [
+                0.5507472157478333,
+                0.46399998664855957,
+                0
+            ]
+        },
+        {
+            "mesh" : 6,
+            "name" : "camaEsq_lowLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                15
+            ],
+            "name" : "camaEsq_lowLeia",
+            "translation" : [
+                -0.6587255001068115,
+                0.690002977848053,
+                0.008059999905526638
+            ]
+        },
+        {
+            "children" : [
+                16
+            ],
+            "name" : "ctrlLeftLeg",
+            "translation" : [
+                0.6587255001068115,
+                -0.690002977848053,
+                -0.008059999905526638
+            ]
+        },
+        {
+            "mesh" : 7,
+            "name" : "brasDretLeiasmooth_plastic_legoMAT_0"
+        },
+        {
+            "mesh" : 8,
+            "name" : "madretaLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                19
+            ],
+            "name" : "madretaLeia",
+            "rotation" : [
+                -0.0845852643251419,
+                -0.9930094480514526,
+                0.08202966302633286,
+                0.006983906961977482
+            ],
+            "translation" : [
+                -0.7431274652481079,
+                0.2990402281284332,
+                -0.13558223843574524
+            ]
+        },
+        {
+            "children" : [
+                20
+            ],
+            "name" : "ctrlRightHand",
+            "rotation" : [
+                0.0845852643251419,
+                0.9930094480514526,
+                -0.08202966302633286,
+                0.006983906961977482
+            ],
+            "translation" : [
+                -0.7829999923706055,
+                -0.1889999955892563,
+                -0.10599999874830246
+            ]
+        },
+        {
+            "children" : [
+                18,
+                21
+            ],
+            "name" : "brasDretLeiasmooth",
+            "rotation" : [
+                0,
+                0,
+                -0.6421189308166504,
+                0.7666050791740417
+            ],
+            "translation" : [
+                -0.3601565659046173,
+                -0.6239765286445618,
+                0
+            ]
+        },
+        {
+            "children" : [
+                22
+            ],
+            "name" : "ctrlRightArm",
+            "rotation" : [
+                0,
+                0,
+                0.6421189308166504,
+                0.7666050791740417
+            ],
+            "translation" : [
+                -0.5511474013328552,
+                0.46399998664855957,
+                0
+            ]
+        },
+        {
+            "mesh" : 9,
+            "name" : "camaDreta_lowLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                24
+            ],
+            "name" : "camaDreta_lowLeia",
+            "translation" : [
+                0.678453803062439,
+                0.690002977848053,
+                0.008059999905526638
+            ]
+        },
+        {
+            "children" : [
+                25
+            ],
+            "name" : "ctrlRightLeg",
+            "translation" : [
+                -0.678453803062439,
+                -0.690002977848053,
+                -0.008059999905526638
+            ]
+        },
+        {
+            "mesh" : 10,
+            "name" : "ejecaderaLeia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                27
+            ],
+            "name" : "ejecaderaLeia"
+        },
+        {
+            "mesh" : 11,
+            "name" : "entrecuixleia_plastic_legoMAT_0"
+        },
+        {
+            "children" : [
+                29
+            ],
+            "name" : "entrecuixleia"
+        },
+        {
+            "children" : [
+                1,
+                3,
+                8,
+                14,
+                17,
+                23,
+                26,
+                28,
+                30
+            ],
+            "name" : "Leia"
+        },
+        {
+            "children" : [
+                31
+            ],
+            "name" : "RootNode.001"
+        },
+        {
+            "children" : [
+                32
+            ],
+            "name" : "8f2ba5b3a4d04d13ae824f92cd6bd9bb.fbx",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ]
+        },
+        {
+            "children" : [
+                33
+            ],
+            "name" : "RootNode (model correction matrix).001"
+        },
+        {
+            "children" : [
+                34
+            ],
+            "name" : "RootNode (gltf orientation matrix).001",
+            "rotation" : [
+                -0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
+            ],
+            "scale" : [
+                2.4000000953674316,
+                2.4000000953674316,
+                2.4000000953674316
+            ],
+            "translation" : [
+                0,
+                3.869999885559082,
+                0
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "plastic_legoMAT.001",
+            "pbrMetallicRoughness" : {
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "plastic_legoMAT",
+            "pbrMetallicRoughness" : {
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "caderaleia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "cos_leia_smooth_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 3,
+                        "NORMAL" : 4
+                    },
+                    "indices" : 5,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "cap_leia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 6,
+                        "NORMAL" : 7
+                    },
+                    "indices" : 8,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "perrucaLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 9,
+                        "NORMAL" : 10
+                    },
+                    "indices" : 11,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "brasEsqLeiaSmooth_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 12,
+                        "NORMAL" : 13,
+                        "COLOR_0" : 14
+                    },
+                    "indices" : 15,
+                    "material" : 1
+                }
+            ]
+        },
+        {
+            "name" : "maEsqLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 16,
+                        "NORMAL" : 17
+                    },
+                    "indices" : 18,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "camaEsq_lowLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 19,
+                        "NORMAL" : 20
+                    },
+                    "indices" : 21,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "brasDretLeiasmooth_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 22,
+                        "NORMAL" : 23,
+                        "COLOR_0" : 24
+                    },
+                    "indices" : 25,
+                    "material" : 1
+                }
+            ]
+        },
+        {
+            "name" : "madretaLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 26,
+                        "NORMAL" : 27
+                    },
+                    "indices" : 28,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "camaDreta_lowLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 29,
+                        "NORMAL" : 30
+                    },
+                    "indices" : 31,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "ejecaderaLeia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 32,
+                        "NORMAL" : 33
+                    },
+                    "indices" : 34,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "entrecuixleia_plastic_legoMAT_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 35,
+                        "NORMAL" : 36
+                    },
+                    "indices" : 37,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 1308,
+            "max" : [
+                0.5777778029441833,
+                -0.2879444360733032,
+                0.32113197445869446
+            ],
+            "min" : [
+                -0.5777778029441833,
+                -0.4701646566390991,
+                -0.3323077857494354
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 1308,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 6048,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 2433,
+            "max" : [
+                0.6222222447395325,
+                0.7702187299728394,
+                0.32131215929985046
+            ],
+            "min" : [
+                -0.6222222447395325,
+                -0.2923487722873688,
+                -0.3332115709781647
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5126,
+            "count" : 2433,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 5,
+            "componentType" : 5123,
+            "count" : 5952,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 6,
+            "componentType" : 5126,
+            "count" : 1378,
+            "max" : [
+                0.4100000858306885,
+                1.7043585777282715,
+                0.39882439374923706
+            ],
+            "min" : [
+                -0.4099999964237213,
+                0.7702228426933289,
+                -0.42117586731910706
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 7,
+            "componentType" : 5126,
+            "count" : 1378,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 8,
+            "componentType" : 5123,
+            "count" : 6120,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 9,
+            "componentType" : 5126,
+            "count" : 5877,
+            "max" : [
+                0.6854034662246704,
+                1.8885473012924194,
+                0.44370412826538086
+            ],
+            "min" : [
+                -0.6792832016944885,
+                0.9648053050041199,
+                -0.5667827129364014
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 10,
+            "componentType" : 5126,
+            "count" : 5877,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 11,
+            "componentType" : 5123,
+            "count" : 34386,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 12,
+            "componentType" : 5126,
+            "count" : 1461,
+            "max" : [
+                0.9386475682258606,
+                0.6916921734809875,
+                0.2225598692893982
+            ],
+            "min" : [
+                0.4610856771469116,
+                -0.2204986959695816,
+                -0.36441969871520996
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 13,
+            "componentType" : 5126,
+            "count" : 1461,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 14,
+            "componentType" : 5123,
+            "count" : 1461,
+            "normalized" : true,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 15,
+            "componentType" : 5123,
+            "count" : 7440,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 16,
+            "componentType" : 5126,
+            "count" : 1734,
+            "max" : [
+                1.0437545776367188,
+                -0.1003153920173645,
+                0.16881811618804932
+            ],
+            "min" : [
+                0.6190518736839294,
+                -0.6671589612960815,
+                -0.22364410758018494
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 17,
+            "componentType" : 5126,
+            "count" : 1734,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 18,
+            "componentType" : 5123,
+            "count" : 9120,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 19,
+            "componentType" : 5126,
+            "count" : 7195,
+            "max" : [
+                0.6344921588897705,
+                -0.3980030119419098,
+                0.35973799228668213
+            ],
+            "min" : [
+                0.03349318727850914,
+                -1.6251050233840942,
+                -0.3000600039958954
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 20,
+            "componentType" : 5126,
+            "count" : 7195,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 21,
+            "componentType" : 5123,
+            "count" : 14265,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 22,
+            "componentType" : 5126,
+            "count" : 1461,
+            "max" : [
+                -0.4610856771469116,
+                0.6916921734809875,
+                0.2225598692893982
+            ],
+            "min" : [
+                -0.9386475682258606,
+                -0.2204986959695816,
+                -0.36441969871520996
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 23,
+            "componentType" : 5126,
+            "count" : 1461,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 24,
+            "componentType" : 5123,
+            "count" : 1461,
+            "normalized" : true,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 25,
+            "componentType" : 5123,
+            "count" : 7440,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 26,
+            "componentType" : 5126,
+            "count" : 1734,
+            "max" : [
+                -0.6190518736839294,
+                -0.1003153920173645,
+                0.16881811618804932
+            ],
+            "min" : [
+                -1.0437545776367188,
+                -0.6671589612960815,
+                -0.22364410758018494
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 27,
+            "componentType" : 5126,
+            "count" : 1734,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 28,
+            "componentType" : 5123,
+            "count" : 9120,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 29,
+            "componentType" : 5126,
+            "count" : 7185,
+            "max" : [
+                -0.03342999890446663,
+                -0.3980030119419098,
+                0.35973799228668213
+            ],
+            "min" : [
+                -0.6344289779663086,
+                -1.6251050233840942,
+                -0.3000600039958954
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 30,
+            "componentType" : 5126,
+            "count" : 7185,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 31,
+            "componentType" : 5123,
+            "count" : 14265,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 32,
+            "componentType" : 5126,
+            "count" : 519,
+            "max" : [
+                0.25,
+                -0.5984262824058533,
+                0.0895557701587677
+            ],
+            "min" : [
+                -0.25,
+                -0.7884263396263123,
+                -0.10044428706169128
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 33,
+            "componentType" : 5126,
+            "count" : 519,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 34,
+            "componentType" : 5123,
+            "count" : 1728,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 35,
+            "componentType" : 5126,
+            "count" : 1458,
+            "max" : [
+                0.07000000774860382,
+                -0.4067332148551941,
+                0.28052765130996704
+            ],
+            "min" : [
+                -0.07000000774860382,
+                -0.979636549949646,
+                -0.29237571358680725
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 36,
+            "componentType" : 5126,
+            "count" : 1458,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 37,
+            "componentType" : 5123,
+            "count" : 7680,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 15696,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 15696,
+            "byteOffset" : 15696
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 12096,
+            "byteOffset" : 31392
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 29196,
+            "byteOffset" : 43488
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 29196,
+            "byteOffset" : 72684
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 11904,
+            "byteOffset" : 101880
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 16536,
+            "byteOffset" : 113784
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 16536,
+            "byteOffset" : 130320
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 12240,
+            "byteOffset" : 146856
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 70524,
+            "byteOffset" : 159096
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 70524,
+            "byteOffset" : 229620
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 68772,
+            "byteOffset" : 300144
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17532,
+            "byteOffset" : 368916
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17532,
+            "byteOffset" : 386448
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 11688,
+            "byteOffset" : 403980
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 14880,
+            "byteOffset" : 415668
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 20808,
+            "byteOffset" : 430548
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 20808,
+            "byteOffset" : 451356
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 18240,
+            "byteOffset" : 472164
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 86340,
+            "byteOffset" : 490404
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 86340,
+            "byteOffset" : 576744
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 28530,
+            "byteOffset" : 663084
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17532,
+            "byteOffset" : 691616
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17532,
+            "byteOffset" : 709148
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 11688,
+            "byteOffset" : 726680
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 14880,
+            "byteOffset" : 738368
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 20808,
+            "byteOffset" : 753248
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 20808,
+            "byteOffset" : 774056
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 18240,
+            "byteOffset" : 794864
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 86220,
+            "byteOffset" : 813104
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 86220,
+            "byteOffset" : 899324
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 28530,
+            "byteOffset" : 985544
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 6228,
+            "byteOffset" : 1014076
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 6228,
+            "byteOffset" : 1020304
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3456,
+            "byteOffset" : 1026532
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17496,
+            "byteOffset" : 1029988
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 17496,
+            "byteOffset" : 1047484
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 15360,
+            "byteOffset" : 1064980
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 1080340,
+            "uri" : "scene.bin"
+        }
+    ]
+}
