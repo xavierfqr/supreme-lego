@@ -45,6 +45,16 @@ const modelsData : ModelType[] = [
       { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0"  ] },
     ]
   },
+  {
+    index: 2,
+    name: 'character_male',
+    parts: [
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+    ]
+  },
   // 'brick',
   // 'brick_thin'
 ];
@@ -127,8 +137,10 @@ function App() {
         <HiddenCanvas models={models} modelsRef={modelsRef}></HiddenCanvas>
       </div>
       :
-      <ItemContainer model={models[itemsState.itemIndex]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
-
+      <div>
+        {console.log('parent index', itemsState.itemIndex)}
+        <ItemContainer model={models[itemsState.itemIndex % itemsCount]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
+      </div>
     }
     </div>
   );

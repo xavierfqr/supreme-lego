@@ -61,7 +61,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
 
     const [isZoomed, setIsZoomed] = React.useState(!props.itemsState.isFullList);
     const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
-    let scene : THREE.Scene;
+    let scene = React.useRef(new THREE.Scene());
     let camera : THREE.PerspectiveCamera;
     let renderer = React.useRef<THREE.WebGLRenderer>();
     let mixer : AnimationMixer;
@@ -99,12 +99,48 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     const animate = () => {
         let delta = clock.getDelta();
         update(delta);
-        renderer.current!.render( scene, camera );
+        renderer.current!.render( scene.current, camera );
         requestAnimationFrame(animate);
     };
 
     React.useEffect(() => {
-        scene = new THREE.Scene();
+        console.log('model', props.model)
+        const currentItem = gltfModel.current?.getObjectByName('item_name')!;
+        const parent = currentItem?.parent;
+        parent?.remove(currentItem);
+
+        const loader = new GLTFLoader();
+        loader.load(
+            `assets/gltf/${props.model.name}/scene.gltf`,
+            gltf => {
+                console.log('je suis dans glft ')
+                mixer = new AnimationMixer(gltf.scene);
+                gltf.scene.traverse(child => child.castShadow = true);
+                gltf.scene.traverse(child => child.receiveShadow = true);
+                gltf.scene.name = 'item_name';
+                gltfModel.current = gltf.scene;
+                if (props.model.index === 1){
+                    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+                    const cube = new THREE.Mesh( geometry, material );
+                    scene.current.add( cube );
+                }
+                scene.current.add(gltf.scene)
+                console.log(gltf.scene)
+                gltf.animations.forEach(element => {
+                    mixer.clipAction(element).play();
+                });
+            }   
+        );
+
+        return () => {
+            const currentItem = gltfModel.current?.getObjectByName('item_name')!;
+            const parent = currentItem?.parent;
+            parent?.remove(currentItem);
+        }
+    }, [props.model])
+
+    React.useEffect(() => {
         camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
         camera.position.set(0, 15, 15);
 
@@ -117,25 +153,12 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         controls.enablePan = true;
 
         const loader = new GLTFLoader();
-        loader.load(
-            `assets/gltf/${props.model.name}/scene.gltf`,
-            gltf => {
-                mixer = new AnimationMixer(gltf.scene);
-                gltf.scene.traverse(child => child.castShadow = true);
-                gltf.scene.traverse(child => child.receiveShadow = true);
-                gltfModel.current = gltf.scene;
-                scene.add(gltf.scene)
-                gltf.animations.forEach(element => {
-                    mixer.clipAction(element).play();
-                });
-            }   
-        );
-
+        
         loader.load(
             'assets/gltf/surroundings/scene.gltf',
             gltf => {
                 gltf.scene.traverse(child => child.receiveShadow = true);
-                scene.add(gltf.scene);
+                scene.current.add(gltf.scene);
             }
         );
 
@@ -150,10 +173,10 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
             'background.jpg',
         ]);
 
-        scene.background = texture;
+        scene.current.background = texture;
 
         const pmremGenerator = new PMREMGenerator(renderer.current);
-        scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), .1).texture;
+        scene.current.environment = pmremGenerator.fromScene(new RoomEnvironment(), .1).texture;
 
         const lampLight = new PointLight();
         lampLight.position.set(15, 15, 0);
@@ -164,7 +187,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         light.target.position.set(-1, -1, 0);
         light.intensity = 2;
 
-        scene.add(light);
+        scene.current.add(light);
 
         renderer.current.shadowMap.enabled = true;
         const shadowLight = new DirectionalLight();
@@ -174,7 +197,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         shadowLight.shadow.mapSize.set(2048, 2048);
         shadowLight.castShadow = true;
 
-        scene.add(shadowLight);
+        scene.current.add(shadowLight);
 
         animate();
     }, [])
@@ -202,7 +225,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     }
 
     const onArrowClick = () => {
-        props.setItemsState({itemIndex: props.itemsState.index! + 1, isFullList: false});
+        props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
     }
 
     const onCanvasMouseDown = () => {
@@ -219,7 +242,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
             <motion.canvas variants={canvasAppear}
                 initial="hidden" animate="visible" exit="exit"
                 ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} 
-                onClick={onCanvasClick} onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp}>
+                onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp}>
             </motion.canvas>
             <AnimatePresence>
             {
