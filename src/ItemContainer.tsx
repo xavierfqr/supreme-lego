@@ -9,7 +9,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ItemContainerProps {
     index?: number,
     setItemsState?: any,
-    itemsState?: any
+    itemsState?: any,
+    model?: string
 }
 
 
@@ -82,10 +83,10 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
     const animate = () => {
         let delta = clock.getDelta();
         requestAnimationFrame(animate);
-        mixer?.update(delta);
+        // mixer?.update(delta);
         if (gltfModel.current){
-            gltfModel.current.rotation.y += 0.01
-            gltfModel.current.rotation.x += 0.0
+            gltfModel.current.rotation.y += delta;
+            // gltfModel.current.rotation.x += 0.0;
         }
         if (resizeRendererToDisplaySize(renderer!)) {
             const canvas = canvasRef.current;
@@ -107,9 +108,8 @@ const ItemContainer = React.forwardRef((props : ItemContainerProps, ref : any) =
         //renderer.setSize(window.innerWidth / (resizeCanvas ? 1.5 : 4), window.innerHeight / (resizeCanvas ? 1.5 : 4));
 
         const loader = new GLTFLoader();
-        
         loader.load(
-            'assets/gltf/scene.gltf',
+            `assets/gltf/${props.model}/scene.gltf`,
             gltf => {
                 mixer = new AnimationMixer(gltf.scene);
                 gltfModel.current = gltf.scene;
