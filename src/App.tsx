@@ -162,7 +162,7 @@ function App() {
           })
         }
         <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading} setProgress={setProgress}></HiddenCanvas>
-        {progress !== 100 && <div style={{textAlign: 'center'}}>
+        {progress !== 100 && <div style={{textAlign: 'center', marginTop:'10rem'}}>
           <progress max="100" value={progress}></progress>
           <div>Loading items...</div>
         </div>}

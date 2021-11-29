@@ -105,7 +105,7 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
 
     return (
         <div>
-            <canvas style={{visibility:'hidden'}} ref={canvasRef}></canvas>
+            <canvas style={{visibility:'hidden', position:'fixed'}} ref={canvasRef}></canvas>
         </div>
     )
 }

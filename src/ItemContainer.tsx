@@ -252,10 +252,10 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                 </motion.canvas>
                 <div>
                     <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
-                        <img src={'right-arrow.png'} ></img>
+                        <img src={'right-arrow.png'}></img>
                     </div>
                     <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
-                        <img src={'right-arrow.png'} ></img>
+                        <img src={'right-arrow.png'}></img>
                     </div>
                 </div>
             </div>

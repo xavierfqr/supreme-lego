@@ -15,11 +15,19 @@
 }
 
 .big {
-  /* width: 50rem; */
   height: fit-content;
   animation: changeSize;
   animation-duration: 3s;
   animation-fill-mode: forwards;
+}
+
+@keyframes changeSize {
+  0% {
+    width: 20rem;
+  }
+  100% {
+    width: 49rem;
+  }
 }
 
 .little {
@@ -53,14 +61,6 @@
   transform: rotate(180deg);
 }
 
-@keyframes changeSize {
-  0% {
-  }
-  100% {
-    width: 50rem;
-  }
-}
-
 .backButton {
   position: fixed;
   top: 10px;
@@ -83,11 +83,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  background: linear-gradient(
-    to right,
-    rgba(145, 152, 229, 0),
-    rgba(145, 152, 229, 1)
-  );
+  background: linear-gradient(to right, rgb(255, 207, 0), rgb(255, 207, 0));
   /* background: linear-gradient(to right, #e66465, #9198e5); */
 }
 
