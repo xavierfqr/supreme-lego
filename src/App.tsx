@@ -17,10 +17,11 @@ export interface ModelType {
 
 interface ModelPartType {
   label: ItemType,
-  tags: string[]
+  tags: string[],
+  position: [number, number, number]
 }
 
-export type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis';
+export type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis' | 'brick';
 
 
 
@@ -29,34 +30,36 @@ const modelsData : ModelType[] = [
     index: 0,
     name: 'character_male',
     parts: [
-      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
-      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
-      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
-      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ], position: [0, 4.5, 1] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ], position: [-3, 4, 0] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ], position: [-2.5, 1.5, 0] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ], position: [0, 3, 1] },
     ]
   },
   {
     index: 1,
     name: 'character_female',
     parts: [
-      { label: 'shirt', tags: [ "cos_leia_smooth_plastic_legoMAT_0" ] },
-      { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ] },
-      { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ] },
-      { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0"  ] },
+      { label: 'shirt', tags: [ "cos_leia_smooth_plastic_legoMAT_0" ], position: [0, 4.5, 1] },
+      { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ], position: [-3, 4, 0] },
+      { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ], position: [-2.5, 1.5, 0] },
+      { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0" ], position: [0, 3, 1] },
     ]
   },
   {
     index: 2,
-    name: 'character_male',
+    name: 'brick',
     parts: [
-      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
-      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
-      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
-      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+      { label: 'brick', tags: [ "Base002" ], position: [0, 3.5, 0]}
     ]
   },
-  // 'brick',
-  // 'brick_thin'
+  {
+    index: 3,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ]
+  }
 ];
 
 
@@ -127,21 +130,21 @@ function App() {
 
   return (
     <div className={styles.container}>
-      {itemsState.isFullList ?
-      <div>
-        {
-          models.map((model, index) => {
-            return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
-          })
-        }
-        <HiddenCanvas models={models} modelsRef={modelsRef}></HiddenCanvas>
-      </div>
-      :
-      <div>
-        {console.log('parent index', itemsState.itemIndex)}
-        <ItemContainer model={models[itemsState.itemIndex % itemsCount]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
-      </div>
-    }
+      {
+        itemsState.isFullList ?
+          <div>
+            {
+              models.map((model, index) => {
+                return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
+              })
+            }
+            <HiddenCanvas models={models} modelsRef={modelsRef}></HiddenCanvas>
+          </div>
+        :
+          <div className={styles.item_container}>
+            <ItemContainer model={models[itemsState.itemIndex % itemsCount]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
+          </div>
+      }
     </div>
   );
 }

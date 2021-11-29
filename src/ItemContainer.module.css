@@ -1,10 +1,10 @@
-.container {
-  width: 100%;
+.viewer_container {
   height: 100%;
+  width: 100%;
 }
 
 .canvas {
-  cursor: pointer;
+  cursor: grab;
   margin: 1rem;
   border-radius: 20px;
   border: 3px solid black;
@@ -12,6 +12,20 @@
 
 .canvas:hover {
   border-color: rgba(0, 0, 0, .5);
+}
+
+.label_renderer {
+  position: absolute;
+  top: 0;
+  margin: 1rem;
+  pointer-events: none;
+}
+
+.annotation {
+  color: white;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, .2);
+  border: 1px solid black;
 }
 
 .big {

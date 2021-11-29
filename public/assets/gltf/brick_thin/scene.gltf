@@ -8,46 +8,21 @@
         {
             "name" : "Scene",
             "nodes" : [
-                0,
-                8
+                6,
+                7,
+                10,
+                14
             ]
         }
     ],
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "pCylinder4_lambert1_0",
-            "scale" : [
-                0.5,
-                0.5,
-                0.5
-            ],
-            "translation" : [
-                0,
-                4.820000171661377,
-                3.6500000953674316
-            ]
-        },
-        {
-            "name" : "Object_11.001",
-            "scale" : [
-                0.987500011920929,
-                0.9910709857940674,
-                0.987500011920929
-            ],
-            "translation" : [
-                -30,
-                -23.91071319580078,
-                10
-            ]
-        },
-        {
-            "mesh" : 1,
             "name" : "Base.003"
         },
         {
             "children" : [
-                2
+                0
             ],
             "name" : "Object_13.001",
             "scale" : [
@@ -63,20 +38,19 @@
         },
         {
             "children" : [
-                1,
-                3
+                1
             ],
             "name" : "Inner-Node-UntitledModel_dot_io-0"
         },
         {
             "children" : [
-                4
+                2
             ],
             "name" : "Node-UntitledModel_dot_io"
         },
         {
             "children" : [
-                5
+                3
             ],
             "name" : "Model",
             "rotation" : [
@@ -93,7 +67,7 @@
         },
         {
             "children" : [
-                6
+                4
             ],
             "name" : "Collada visual scene group",
             "rotation" : [
@@ -105,7 +79,7 @@
         },
         {
             "children" : [
-                7
+                5
             ],
             "name" : "Sketchfab_model",
             "rotation" : [
@@ -115,35 +89,99 @@
                 0.7071068286895752
             ],
             "scale" : [
-                0.25,
-                0.25,
-                0.25
+                0.10000000149011612,
+                0.10000000149011612,
+                0.10000000149011612
             ],
             "translation" : [
-                7.5,
+                3,
                 0,
-                -2.5
+                -1
+            ]
+        },
+        {
+            "mesh" : 1,
+            "name" : "pCylinder4_lambert1_0",
+            "scale" : [
+                0.20000000298023224,
+                0.20000000298023224,
+                0.20000000298023224
+            ],
+            "translation" : [
+                0,
+                1.9299999475479126,
+                1.465000033378601
+            ]
+        },
+        {
+            "name" : "Inner-Node-UntitledModel_dot_io-0.001"
+        },
+        {
+            "children" : [
+                8
+            ],
+            "name" : "Node-UntitledModel_dot_io.001"
+        },
+        {
+            "children" : [
+                9
+            ],
+            "name" : "Model.001",
+            "rotation" : [
+                0,
+                1,
+                0,
+                0
+            ],
+            "scale" : [
+                -1,
+                -1,
+                -1
+            ]
+        },
+        {
+            "name" : "Inner-Node-UntitledModel_dot_io-0.002"
+        },
+        {
+            "children" : [
+                11
+            ],
+            "name" : "Node-UntitledModel_dot_io.002"
+        },
+        {
+            "children" : [
+                12
+            ],
+            "name" : "Model.002",
+            "rotation" : [
+                0,
+                1,
+                0,
+                0
+            ],
+            "scale" : [
+                -1,
+                -1,
+                -1
+            ]
+        },
+        {
+            "children" : [
+                13
+            ],
+            "name" : "Collada visual scene group.002",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071068286895752
             ]
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "lambert1.002",
-            "pbrMetallicRoughness" : {
-                "baseColorFactor" : [
-                    0.4000000059604645,
-                    0.4000000059604645,
-                    0.4000000059604645,
-                    1
-                ],
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.6000000238418579
-            }
-        },
-        {
-            "doubleSided" : true,
-            "name" : "SOLID-WHITE_0.002",
+            "name" : "SOLID-WHITE_0.004",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.9960780143737793,
@@ -154,30 +192,44 @@
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.6636414527893066
             }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "lambert1.001",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.4000000059604645,
+                    0.4000000059604645,
+                    0.4000000059604645,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
+            }
         }
     ],
     "meshes" : [
         {
-            "name" : "pCylinder4_lambert1_0",
+            "name" : "Base.007",
             "primitives" : [
                 {
                     "attributes" : {
                         "POSITION" : 0,
-                        "NORMAL" : 1,
-                        "TEXCOORD_0" : 2
+                        "NORMAL" : 1
                     },
-                    "indices" : 3,
+                    "indices" : 2,
                     "material" : 0
                 }
             ]
         },
         {
-            "name" : "Base.005",
+            "name" : "pCylinder4_lambert1_0.001",
             "primitives" : [
                 {
                     "attributes" : {
-                        "POSITION" : 4,
-                        "NORMAL" : 5
+                        "POSITION" : 3,
+                        "NORMAL" : 4,
+                        "TEXCOORD_0" : 5
                     },
                     "indices" : 6,
                     "material" : 1
@@ -188,40 +240,6 @@
     "accessors" : [
         {
             "bufferView" : 0,
-            "componentType" : 5126,
-            "count" : 121,
-            "max" : [
-                5,
-                4.300000190734863,
-                -2.322014331817627
-            ],
-            "min" : [
-                -5,
-                -2,
-                -12.322013854980469
-            ],
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 1,
-            "componentType" : 5126,
-            "count" : 121,
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 2,
-            "componentType" : 5126,
-            "count" : 121,
-            "type" : "VEC2"
-        },
-        {
-            "bufferView" : 3,
-            "componentType" : 5123,
-            "count" : 276,
-            "type" : "SCALAR"
-        },
-        {
-            "bufferView" : 4,
             "componentType" : 5126,
             "count" : 3649,
             "max" : [
@@ -237,53 +255,87 @@
             "type" : "VEC3"
         },
         {
-            "bufferView" : 5,
+            "bufferView" : 1,
             "componentType" : 5126,
             "count" : 3649,
             "type" : "VEC3"
         },
         {
-            "bufferView" : 6,
+            "bufferView" : 2,
             "componentType" : 5123,
             "count" : 13629,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 121,
+            "max" : [
+                5,
+                4.300000190734863,
+                -2.322014331817627
+            ],
+            "min" : [
+                -5,
+                -2,
+                -12.322013854980469
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5126,
+            "count" : 121,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 5,
+            "componentType" : 5126,
+            "count" : 121,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 6,
+            "componentType" : 5123,
+            "count" : 276,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 1452,
+            "byteLength" : 43788,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 1452,
-            "byteOffset" : 1452
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 968,
-            "byteOffset" : 2904
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 552,
-            "byteOffset" : 3872
-        },
-        {
-            "buffer" : 0,
             "byteLength" : 43788,
-            "byteOffset" : 4424
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 43788,
-            "byteOffset" : 48212
+            "byteOffset" : 43788
         },
         {
             "buffer" : 0,
             "byteLength" : 27258,
-            "byteOffset" : 92000
+            "byteOffset" : 87576
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1452,
+            "byteOffset" : 114836
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1452,
+            "byteOffset" : 116288
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 968,
+            "byteOffset" : 117740
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 552,
+            "byteOffset" : 118708
         }
     ],
     "buffers" : [
