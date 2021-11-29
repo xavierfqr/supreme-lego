@@ -87,8 +87,6 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
         if (!camera) return;
         const ratio = 100 / models.length;
         models.forEach((model, index) => {
-            console.log('looadinwirufghewiufh')
-
             const ctx = modelsRef.current[index].getContext('2d');
             setTimeout(() => {
                 ctx.drawImage(renderer.current!.getContext().canvas, 0, 0, 700, 700, 0, 0, 700, 700);
