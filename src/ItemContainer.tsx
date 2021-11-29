@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial, CubeTextureLoader, PMREMGenerator, PointLight, Mesh, SphereGeometry } from 'three';
+import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial, CubeTextureLoader, PMREMGenerator, PointLight, Mesh, SphereGeometry, Vector2, Raycaster } from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import {ModelType, ItemType} from './App';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 
 interface ItemContainerProps {
@@ -64,6 +65,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     let scene = React.useRef(new THREE.Scene());
     let camera : THREE.PerspectiveCamera;
     let renderer = React.useRef<THREE.WebGLRenderer>();
+    let labelRenderer: CSS2DRenderer;
     let mixer : AnimationMixer;
     let gltfModel = React.useRef<THREE.Group>();
     const clock = new Clock();
@@ -78,12 +80,14 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         const needResize = canvas.width !== width || canvas.height !== height;
         if (needResize) {
             renderer.setSize(width, height, false);
+            labelRenderer.setSize(width, height);
         }
         return needResize;
     }
 
     const update = (delta: number) => {
         // mixer?.update(delta);
+        controls.update();
         if (gltfModel.current && isIdle.current) {
             gltfModel.current.rotation.y += delta;
         }
@@ -100,11 +104,11 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         let delta = clock.getDelta();
         update(delta);
         renderer.current!.render( scene.current, camera );
+        labelRenderer.render( scene.current, camera );
         requestAnimationFrame(animate);
     };
 
     React.useEffect(() => {
-        console.log('model', props.model)
         const currentItem = gltfModel.current?.getObjectByName('item_name')!;
         const parent = currentItem?.parent;
         parent?.remove(currentItem);
@@ -113,7 +117,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         loader.load(
             `assets/gltf/${props.model.name}/scene.gltf`,
             gltf => {
-                console.log('je suis dans glft ')
                 mixer = new AnimationMixer(gltf.scene);
                 gltf.scene.traverse(child => child.castShadow = true);
                 gltf.scene.traverse(child => child.receiveShadow = true);
@@ -126,12 +129,16 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                     scene.current.add( cube );
                 }
                 scene.current.add(gltf.scene)
-                console.log(gltf.scene)
                 gltf.animations.forEach(element => {
                     mixer.clipAction(element).play();
                 });
             }   
         );
+
+        const div = document.createElement('div');
+        div.textContent = 'ledsssssssssssssssssssssssssssssssssssssssssgo';
+        const divLabel = new CSS2DObject(div);
+        scene.current?.add(divLabel);
 
         return () => {
             const currentItem = gltfModel.current?.getObjectByName('item_name')!;
@@ -141,10 +148,13 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
     }, [props.model])
 
     React.useEffect(() => {
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000 );
         camera.position.set(0, 15, 15);
 
         renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
+        labelRenderer = new CSS2DRenderer();
+        labelRenderer.domElement.style.position = 'absolute';
+        canvasRef.current?.appendChild(labelRenderer.domElement);
 
         //renderer.setSize(window.innerWidth / (resizeCanvas ? 1.5 : 4), window.innerHeight / (resizeCanvas ? 1.5 : 4));
         
@@ -219,11 +229,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         setInputColor(newInputColors);
     }
 
-    const onCanvasClick = () => {
-        props.setItemsState({itemIndex: 0, isFullList: !props.itemsState.isFullList});
-        setIsZoomed(!isZoomed);
-    }
-
     const onArrowClick = () => {
         props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
     }
@@ -237,8 +242,36 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         idleSettingDelay = setTimeout(() => isIdle.current = true, 2000)
     }
 
+    const onCanvasDoubleClick = (e : any) => {
+        e.preventDefault();
+
+        const width = renderer.current!.domElement.clientWidth;
+        const height = renderer.current!.domElement.clientHeight;
+
+        const normalizedMouse = new Vector2();
+        normalizedMouse.set(
+            (e.clientX / width) * 2.0 - 1.0,
+            (e.clientY/ height) * 2.0 - 1.0
+        )
+
+        console.log('window: ', window.innerWidth, window.innerHeight);
+        console.log('renderer: ', width, height);
+        console.log('mouse: ', e.clientX, e.clientY);
+        console.log('normal: ', normalizedMouse);
+
+        const raycaster = new Raycaster();
+        raycaster.setFromCamera(normalizedMouse, camera);
+        const intersection = raycaster.intersectObject(scene.current, true);
+        console.log('dblclick');
+        if (intersection && intersection.length > 0) {
+            console.log(intersection[0]);
+            const target = intersection[0].point
+            camera.position.set(target.x, target.y, target.z);
+        }
+    }
+
     return (
-        <div className={styles.container} ref={ref}>
+        <div className={styles.container} ref={ref} onDoubleClick={onCanvasDoubleClick}>
             <motion.canvas variants={canvasAppear}
                 initial="hidden" animate="visible" exit="exit"
                 ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} 
@@ -247,23 +280,21 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
             <AnimatePresence>
             {
                 isZoomed ? 
-                <div>
-                    <button onClick={() => {setIsZoomed(false); props.setItemsState({itemIndex: props.itemsState.index, isFullList: true});}}>back</button>
-                    <motion.div className={styles.pannel} variants={panelAppear} 
-                                initial="hidden" animate="visible" exit="exit">
-                        {props.model?.parts.map(part => 
-                            <div>
-                                <label>{`Change ${part.label} color`}</label>
-                                <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
+                    <div>
+                        <button onClick={() => {setIsZoomed(false); props.setItemsState({itemIndex: props.itemsState.index, isFullList: true});}}>back</button>
+                        <motion.div className={styles.pannel} variants={panelAppear} 
+                                    initial="hidden" animate="visible" exit="exit">
+                            {props.model?.parts.map(part => 
+                                <div>
+                                    <label>{`Change ${part.label} color`}</label>
+                                    <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
                                 </div>
-                        )}
-                    </motion.div>
-                    <button onClick={() => onArrowClick()}>Next</button>
-
-                </div>
-                
+                            )}
+                        </motion.div>
+                        <button onClick={() => onArrowClick()}>Next</button>
+                    </div>
                 :
-                null
+                    null
             }
             </AnimatePresence>
         </div>
