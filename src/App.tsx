@@ -89,6 +89,7 @@ function App() {
   const [itemsCount, setItemsCount] = React.useState(3);
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
   const [isLoading, setIsLoading] = React.useState(true);
+  const [progress, setProgress] = React.useState(0)
 
   let observer : IntersectionObserver;
 
@@ -128,14 +129,14 @@ function App() {
   React.useEffect(() => {
 
     models.forEach((model) => {
-      if (model.index >= itemsCount || isLoading){
+      if (model.index >= itemsCount || progress !== 100){
         modelsRef.current[model.index]!.style.display = 'none';
       }
       else {
         modelsRef.current[model.index]!.style.display = 'block';
       }
     })
-  }, [itemsCount, isLoading])
+  }, [itemsCount, progress])
   
   React.useEffect(() => {
     if (itemsState.isFullList){
@@ -151,6 +152,8 @@ function App() {
 
   return (
     <div className={styles.container}>
+      <div>
+      </div>
       {itemsState.isFullList ?
       <div>
         {
@@ -158,12 +161,15 @@ function App() {
             return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
           })
         }
-        <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading}></HiddenCanvas>
-        {isLoading && <div>Loading...</div>}
+        <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading} setProgress={setProgress}></HiddenCanvas>
+        {progress !== 100 && <div style={{textAlign: 'center'}}>
+          <progress max="100" value={progress}></progress>
+          <div>Loading items...</div>
+        </div>}
       </div>
       :
       <div>
-        <ItemContainer model={models[mod(itemsState.itemIndex, itemsCount)]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
+        <ItemContainer model={models[mod(itemsState.itemIndex, itemsCount)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
       </div>
     }
     </div>

@@ -12,7 +12,8 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 interface ItemContainerProps {
     setItemsState: any,
     itemsState: any,
-    model: ModelType
+    model: ModelType,
+    setProgress: Function
 }
 
 
@@ -59,7 +60,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
 
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-    const [isZoomed, setIsZoomed] = React.useState(!props.itemsState.isFullList);
     const [inputColor, setInputColor] = React.useState({arms: 'red', legs: 'blue', shirt: 'black', pelvis: 'blue'});
     let scene = React.useRef(new THREE.Scene());
     let camera : THREE.PerspectiveCamera;
@@ -215,7 +215,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
 
     const onCanvasClick = () => {
         props.setItemsState({itemIndex: 0, isFullList: !props.itemsState.isFullList});
-        setIsZoomed(!isZoomed);
     }
 
     const onArrowRightClick = () => {
@@ -235,30 +234,34 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         idleSettingDelay = setTimeout(() => isIdle.current = true, 2000)
     }
 
+    const onBackButtonClick = () => {
+        props.setItemsState({itemIndex: props.itemsState.index, isFullList: true})
+        props.setProgress(0);
+    }
+
     return (
         <div className={styles.container} ref={ref}>
             <div style={{position:'relative'}}>
+                <div className={styles.backButton} onClick={() => onBackButtonClick()}>
+                    <img src='arrow.png'></img>
+                </div>
                 <motion.canvas variants={canvasAppear}
                     initial="hidden" animate="visible" exit="exit"
-                    ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} 
+                    ref={canvasRef} className={`${styles.canvas} ${styles.big}`} 
                     onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp}>
                 </motion.canvas>
-                {isZoomed && <div>
+                <div>
                     <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
                         <img src={'right-arrow.png'} ></img>
                     </div>
                     <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
                         <img src={'right-arrow.png'} ></img>
                     </div>
-                    </div>
-                }
+                </div>
             </div>
 
             <AnimatePresence>
-            {
-                isZoomed ? 
                 <div>
-                    <button onClick={() => {setIsZoomed(false); props.setItemsState({itemIndex: props.itemsState.index, isFullList: true});}}>back</button>
                     <motion.div className={styles.pannel} variants={panelAppear} 
                                 initial="hidden" animate="visible" exit="exit">
                         {props.model?.parts.map(part => 
@@ -268,12 +271,7 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                                 </div>
                         )}
                     </motion.div>
-
                 </div>
-                
-                :
-                null
-            }
             </AnimatePresence>
         </div>
     )

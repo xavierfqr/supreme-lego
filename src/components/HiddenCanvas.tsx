@@ -8,9 +8,10 @@ interface HiddenCanvasProps {
     models: ModelType[],
     modelsRef: any,
     setIsLoading: Function
+    setProgress: Function
 }
 
-const HiddenCanvas = ({models, modelsRef, setIsLoading} : HiddenCanvasProps) => {
+const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCanvasProps) => {
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     let scene : THREE.Scene;
     let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -84,6 +85,7 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading} : HiddenCanvasProps) => 
 
     React.useEffect(() => {
         if (!camera) return;
+        const ratio = 100 / models.length;
         models.forEach((model, index) => {
             console.log('looadinwirufghewiufh')
 
@@ -91,8 +93,9 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading} : HiddenCanvasProps) => 
             setTimeout(() => {
                 ctx.drawImage(renderer.current!.getContext().canvas, 0, 0, 700, 700, 0, 0, 700, 700);
                 camera.position.x -= 30;
+                setProgress((progress: number) => progress + ratio);
                 if (index === models.length - 1){
-                    setIsLoading(false)
+                    setProgress(100)
                 }
             }, 2000 + model.index * 100)
         })
