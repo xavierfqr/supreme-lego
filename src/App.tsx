@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import styles from './App.module.css';
 import ItemContainer from './ItemContainer';
 import HiddenCanvas from './components/HiddenCanvas';
+import { mod } from './utils/utils';
+
 
 interface itemsStateType {
   itemIndex: number,
@@ -55,6 +57,26 @@ const modelsData : ModelType[] = [
       { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
     ]
   },
+  {
+    index: 3,
+    name: 'character_male',
+    parts: [
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+    ]
+  },
+  {
+    index: 4,
+    name: 'character_male',
+    parts: [
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ] },
+    ]
+  },
   // 'brick',
   // 'brick_thin'
 ];
@@ -66,6 +88,7 @@ function App() {
   const [models, setModels] = React.useState(modelsData)
   const [itemsCount, setItemsCount] = React.useState(3);
   const [itemsState, setItemsState] = React.useState<itemsStateType>({itemIndex: 0, isFullList: true});
+  const [isLoading, setIsLoading] = React.useState(true);
 
   let observer : IntersectionObserver;
 
@@ -103,15 +126,16 @@ function App() {
 }, [lastChildRef, options])
 
   React.useEffect(() => {
+
     models.forEach((model) => {
-      if (model.index >= itemsCount){
+      if (model.index >= itemsCount || isLoading){
         modelsRef.current[model.index]!.style.display = 'none';
       }
       else {
         modelsRef.current[model.index]!.style.display = 'block';
       }
     })
-  }, [itemsCount])
+  }, [itemsCount, isLoading])
   
   React.useEffect(() => {
     if (itemsState.isFullList){
@@ -134,12 +158,12 @@ function App() {
             return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
           })
         }
-        <HiddenCanvas models={models} modelsRef={modelsRef}></HiddenCanvas>
+        <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading}></HiddenCanvas>
+        {isLoading && <div>Loading...</div>}
       </div>
       :
       <div>
-        {console.log('parent index', itemsState.itemIndex)}
-        <ItemContainer model={models[itemsState.itemIndex % itemsCount]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
+        <ItemContainer model={models[mod(itemsState.itemIndex, itemsCount)]} itemsState={itemsState} setItemsState={setItemsState}></ItemContainer>
       </div>
     }
     </div>

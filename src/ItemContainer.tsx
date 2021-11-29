@@ -119,12 +119,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                 gltf.scene.traverse(child => child.receiveShadow = true);
                 gltf.scene.name = 'item_name';
                 gltfModel.current = gltf.scene;
-                if (props.model.index === 1){
-                    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-                    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-                    const cube = new THREE.Mesh( geometry, material );
-                    scene.current.add( cube );
-                }
                 scene.current.add(gltf.scene)
                 console.log(gltf.scene)
                 gltf.animations.forEach(element => {
@@ -224,8 +218,12 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
         setIsZoomed(!isZoomed);
     }
 
-    const onArrowClick = () => {
+    const onArrowRightClick = () => {
         props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
+    }
+
+    const onArrowLeftClick = () => {
+        props.setItemsState({itemIndex: props.model.index - 1, isFullList: false});
     }
 
     const onCanvasMouseDown = () => {
@@ -239,11 +237,23 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
 
     return (
         <div className={styles.container} ref={ref}>
-            <motion.canvas variants={canvasAppear}
-                initial="hidden" animate="visible" exit="exit"
-                ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} 
-                onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp}>
-            </motion.canvas>
+            <div style={{position:'relative'}}>
+                <motion.canvas variants={canvasAppear}
+                    initial="hidden" animate="visible" exit="exit"
+                    ref={canvasRef} className={`${styles.canvas} ${isZoomed ? styles.big : styles.little}`} 
+                    onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp}>
+                </motion.canvas>
+                {isZoomed && <div>
+                    <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
+                        <img src={'right-arrow.png'} ></img>
+                    </div>
+                    <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
+                        <img src={'right-arrow.png'} ></img>
+                    </div>
+                    </div>
+                }
+            </div>
+
             <AnimatePresence>
             {
                 isZoomed ? 
@@ -258,7 +268,6 @@ const ItemContainer = React.forwardRef<HTMLDivElement, ItemContainerProps>((prop
                                 </div>
                         )}
                     </motion.div>
-                    <button onClick={() => onArrowClick()}>Next</button>
 
                 </div>
                 

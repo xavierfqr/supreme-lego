@@ -11,7 +11,7 @@
 }
 
 .canvas:hover {
-  border-color: rgba(0, 0, 0, .5);
+  border-color: rgba(0, 0, 0, 0.5);
 }
 
 .big {
@@ -24,6 +24,33 @@
 
 .little {
   width: 30rem;
+}
+
+.arrowRight {
+  position: absolute;
+  right: 80px;
+  top: calc(50% - 25px);
+}
+
+.arrowRight > img {
+  height: 50px;
+  width: 50px;
+  top: 0;
+  left: 0;
+}
+
+.arrowLeft {
+  position: absolute;
+  left: 20px;
+  top: calc(50% - 25px);
+}
+
+.arrowLeft > img {
+  height: 50px;
+  width: 50px;
+  top: 0;
+  left: 0;
+  transform: rotate(180deg);
 }
 
 @keyframes changeSize {

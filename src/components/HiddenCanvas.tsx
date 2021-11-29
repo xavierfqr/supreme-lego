@@ -6,10 +6,11 @@ import { ModelType } from '../App';
 
 interface HiddenCanvasProps {
     models: ModelType[],
-    modelsRef: any
+    modelsRef: any,
+    setIsLoading: Function
 }
 
-const HiddenCanvas = ({models, modelsRef} : HiddenCanvasProps) => {
+const HiddenCanvas = ({models, modelsRef, setIsLoading} : HiddenCanvasProps) => {
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     let scene : THREE.Scene;
     let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -60,7 +61,7 @@ const HiddenCanvas = ({models, modelsRef} : HiddenCanvasProps) => {
                 `assets/gltf/${model.name}/scene.gltf`,
                 gltf => {
                     gltf.scene.position.y = -5;
-                    gltf.scene.position.x = -5 * model.index;
+                    gltf.scene.position.x = -30 * model.index;
                     scene.add(gltf.scene);
                 }
             )
@@ -84,10 +85,15 @@ const HiddenCanvas = ({models, modelsRef} : HiddenCanvasProps) => {
     React.useEffect(() => {
         if (!camera) return;
         models.forEach((model, index) => {
+            console.log('looadinwirufghewiufh')
+
             const ctx = modelsRef.current[index].getContext('2d');
             setTimeout(() => {
-                ctx.drawImage(renderer.current!.getContext().canvas, 0, 0, 500, 500, 0, 0, 500, 500);
-                camera.position.x -= 5;
+                ctx.drawImage(renderer.current!.getContext().canvas, 0, 0, 700, 700, 0, 0, 700, 700);
+                camera.position.x -= 30;
+                if (index === models.length - 1){
+                    setIsLoading(false)
+                }
             }, 2000 + model.index * 100)
         })
     }, [models])
