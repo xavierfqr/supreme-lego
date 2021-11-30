@@ -81,6 +81,7 @@
   position: fixed;
   top: 10px;
   left: 30px;
+  cursor: pointer;
 }
 
 .backButton > img {
@@ -107,4 +108,12 @@ label {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: white;
+}
+
+.colorPicker {
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  border: none;
+  cursor: pointer;
 }

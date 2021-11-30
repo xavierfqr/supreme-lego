@@ -9,9 +9,7 @@
             "name" : "Scene",
             "nodes" : [
                 6,
-                7,
-                10,
-                14
+                7
             ]
         }
     ],
@@ -112,76 +110,12 @@
                 1.9299999475479126,
                 1.465000033378601
             ]
-        },
-        {
-            "name" : "Inner-Node-UntitledModel_dot_io-0.001"
-        },
-        {
-            "children" : [
-                8
-            ],
-            "name" : "Node-UntitledModel_dot_io.001"
-        },
-        {
-            "children" : [
-                9
-            ],
-            "name" : "Model.001",
-            "rotation" : [
-                0,
-                1,
-                0,
-                0
-            ],
-            "scale" : [
-                -1,
-                -1,
-                -1
-            ]
-        },
-        {
-            "name" : "Inner-Node-UntitledModel_dot_io-0.002"
-        },
-        {
-            "children" : [
-                11
-            ],
-            "name" : "Node-UntitledModel_dot_io.002"
-        },
-        {
-            "children" : [
-                12
-            ],
-            "name" : "Model.002",
-            "rotation" : [
-                0,
-                1,
-                0,
-                0
-            ],
-            "scale" : [
-                -1,
-                -1,
-                -1
-            ]
-        },
-        {
-            "children" : [
-                13
-            ],
-            "name" : "Collada visual scene group.002",
-            "rotation" : [
-                0.7071068286895752,
-                0,
-                0,
-                0.7071068286895752
-            ]
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "SOLID-WHITE_0.004",
+            "name" : "SOLID-WHITE_0.001",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.9960780143737793,
@@ -195,7 +129,7 @@
         },
         {
             "doubleSided" : true,
-            "name" : "lambert1.001",
+            "name" : "lambert1.002",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.4000000059604645,
@@ -210,7 +144,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Base.007",
+            "name" : "Base.001",
             "primitives" : [
                 {
                     "attributes" : {
@@ -223,7 +157,7 @@
             ]
         },
         {
-            "name" : "pCylinder4_lambert1_0.001",
+            "name" : "pCylinder4_lambert1_0.002",
             "primitives" : [
                 {
                     "attributes" : {

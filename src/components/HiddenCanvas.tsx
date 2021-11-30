@@ -14,7 +14,7 @@ interface HiddenCanvasProps {
 const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCanvasProps) => {
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     let scene : THREE.Scene;
-    let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000 );
     let renderer = React.useRef<THREE.WebGLRenderer>();
     const clock = new Clock();
 
@@ -61,13 +61,13 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
             loader.load(
                 `assets/gltf/${model.name}/scene.gltf`,
                 gltf => {
-                    gltf.scene.position.y = -5;
+                    gltf.scene.position.y = -4;
                     gltf.scene.position.x = -30 * model.index;
                     scene.add(gltf.scene);
                 }
             )
         })
-        const texture = new TextureLoader().load('sky_cloud_evening.jpg');
+        const texture = new TextureLoader().load('assets/background_scroll.jpg');
 
         const light = new DirectionalLight();
         light.add(light.target);
