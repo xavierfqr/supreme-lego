@@ -63,7 +63,7 @@ const ItemContainer = (props : ItemContainerProps) => {
 
     const [inputColor, setInputColor] = React.useState({arms: 'white', legs: 'white', shirt: 'white', pelvis: 'white', brick: 'white'});
     let scene = React.useRef(new THREE.Scene());
-    let camera : THREE.PerspectiveCamera;
+    let camera = React.useRef<THREE.PerspectiveCamera | null>(null);
     let renderer = React.useRef<THREE.WebGLRenderer>();
     let labelRenderer = React.useRef<CSS2DRenderer>();
     let mixer : AnimationMixer;
@@ -93,9 +93,9 @@ const ItemContainer = (props : ItemContainerProps) => {
         }
         if (resizeRendererToDisplaySize(renderer.current!)) {
             const canvas = canvasRef.current;
-            if (canvas) {
-                camera.aspect = canvas.clientWidth / canvas.clientHeight;
-                camera.updateProjectionMatrix();
+            if (canvas && camera.current) {
+                camera.current.aspect = canvas.clientWidth / canvas.clientHeight;
+                camera.current.updateProjectionMatrix();
             }
         }
     };
@@ -103,8 +103,8 @@ const ItemContainer = (props : ItemContainerProps) => {
     const animate = () => {
         let delta = clock.getDelta();
         update(delta);
-        renderer.current!.render( scene.current, camera );
-        labelRenderer.current!.render( scene.current, camera );
+        renderer.current!.render( scene.current, camera.current! );
+        labelRenderer.current!.render( scene.current, camera.current! );
         requestAnimationFrame(animate);
     };
 
@@ -158,15 +158,15 @@ const ItemContainer = (props : ItemContainerProps) => {
     }, [props.model]);
 
     React.useEffect(() => {
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000 );
-        camera.position.set(0, 15, 15);
+        camera.current = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000 );
+        camera.current.position.set(0, 15, 15);
 
         renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true} );
         labelRenderer.current = new CSS2DRenderer();
         labelRenderer.current.domElement.className = styles.label_renderer;
         canvasRef.current!.parentElement!.appendChild(labelRenderer.current.domElement);
         
-        controls = new OrbitControls(camera, renderer.current.domElement)
+        controls = new OrbitControls(camera.current, renderer.current.domElement)
         controls.enableDamping = true;
         controls.enablePan = true;
 
@@ -270,11 +270,11 @@ const ItemContainer = (props : ItemContainerProps) => {
         );
 
         const raycaster = new Raycaster();
-        raycaster.setFromCamera(normalizedMouse, camera);
+        raycaster.setFromCamera(normalizedMouse, camera.current!);
         const intersection = raycaster.intersectObject(scene.current, true);
         if (intersection && intersection.length > 0) {
             const target = intersection[0].point
-            camera.position.set(target.x, target.y, target.z);
+            camera.current!.position.set(target.x, target.y, target.z);
         }
     }
 
