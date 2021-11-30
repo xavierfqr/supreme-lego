@@ -152,6 +152,8 @@ const ItemContainer = (props : ItemContainerProps) => {
             const currentItem = gltfModel.current?.getObjectByName('item_name')!;
             const parent = currentItem?.parent;
             parent?.remove(currentItem);
+
+            labelRenderer.current!.domElement.innerHTML = '';
         }
     }, [props.model]);
 
@@ -312,6 +314,22 @@ const ItemContainer = (props : ItemContainerProps) => {
                                 <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
                             </div>
                         )}
+                        {
+                            props.model?.parts.length === 1 ?
+                                ['width', 'height'].map(size => {
+                                    return (
+                                        <>
+                                            <label>{size}</label>
+                                            <select>
+                                                {Array.from(Array(10).keys()).map(x => x++).map(i => <option>{i}</option>)}
+                                            </select>
+                                        </>
+                                    )
+                                })
+                                
+                            :
+                                null
+                        }
                     </motion.div>
                 </div>
             </AnimatePresence>

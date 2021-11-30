@@ -49,6 +49,7 @@
 }
 
 .arrowRight {
+  cursor: pointer;
   position: absolute;
   right: 80px;
   top: calc(50% - 25px);
@@ -62,6 +63,7 @@
 }
 
 .arrowLeft {
+  cursor: pointer;
   position: absolute;
   left: 20px;
   top: calc(50% - 25px);
