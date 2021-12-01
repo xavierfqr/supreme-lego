@@ -39,6 +39,7 @@ const ItemContainer = (props : ItemContainerProps) => {
     let idleSettingDelay = setTimeout(() => isIdle.current = true, 2000);
     const rotationSpeed = React.useRef(1);
     let rotationSpeedChange : NodeJS.Timeout;
+    const [isLoaded, setIsLoaded] = React.useState(false);
 
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
         const canvas = renderer.domElement; 
@@ -107,7 +108,6 @@ const ItemContainer = (props : ItemContainerProps) => {
                     divLabel.position.set(...part.position);
                     gltf.scene.add(divLabel);
                 });
-                setAnnotationVisible(true);
 
                 gltfModelContainer.current = new Object3D();
                 gltfModelContainer.current.add(gltf.scene);
@@ -121,17 +121,17 @@ const ItemContainer = (props : ItemContainerProps) => {
                         }
                     });
                 }
+                setAnnotationVisible(true);
+                rotationSpeedChange = setInterval(() => {
+                    if (rotationSpeed.current === 1) {
+                        clearInterval(rotationSpeedChange);
+                        setIsLoaded(true);
+                    } else {
+                        rotationSpeed.current -= 1; 
+                    }
+                }, 20);
             }   
         );
-
-        rotationSpeedChange = setInterval(() => {
-            if (rotationSpeed.current === 1) {
-                clearInterval(rotationSpeedChange);
-            } else {
-                rotationSpeed.current -= 1; 
-            }
-        }, 20);
-        
 
         setBrickSize({width: 1, height: 1});
         return () => {
@@ -221,26 +221,26 @@ const ItemContainer = (props : ItemContainerProps) => {
         setInputColor(newInputColors);
     }
 
+    const modelTransition = (direction: number) => {
+        if (isLoaded) {
+            rotationSpeedChange = setInterval(() => {
+                if (rotationSpeed.current === 40) {
+                    clearInterval(rotationSpeedChange);
+                    props.setItemsState({itemIndex: props.model.index + direction, isFullList: false});
+                } else {
+                    rotationSpeed.current += 1;
+                }
+            }, 20); 
+            setIsLoaded(false);
+        }
+    }
+
     const onArrowRightClick = () => {
-        rotationSpeedChange = setInterval(() => {
-            if (rotationSpeed.current === 40) {
-                clearInterval(rotationSpeedChange);
-                props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
-            } else {
-                rotationSpeed.current += 1;
-            }
-        }, 20); 
+        modelTransition(1);
     }
 
     const onArrowLeftClick = () => {
-        rotationSpeedChange = setInterval(() => {
-            if (rotationSpeed.current === 40) {
-                clearInterval(rotationSpeedChange);
-                props.setItemsState({itemIndex: props.model.index - 1, isFullList: false});
-            } else {
-                rotationSpeed.current += 1;
-            }
-        }, 20); 
+        modelTransition(-1);
     }
 
     const onCanvasMouseDown = () => {
@@ -362,33 +362,33 @@ const ItemContainer = (props : ItemContainerProps) => {
                                 initial="hidden" animate="visible" exit="exit">
                         <h2>Customization Panel</h2>
                         <table style={{borderSpacing: '1rem'}}>
-                        <tbody>
-                            {props.model?.parts.map(part =>
-                                <tr key={part.label}>
-                                    <td><label>{`Change ${part.label} color`}</label></td>
-                                    <td><input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/></td>
+                            <tbody>
+                                {props.model?.parts.map(part =>
+                                    <tr key={part.label}>
+                                        <td><label>{`Change ${part.label} color`}</label></td>
+                                        <td><input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/></td>
+                                    </tr>
+                                )}
+                                {props.model?.parts.length === 1 &&
+                                    Object.entries(brickSize).map(size => {
+                                        return (
+                                            <tr key={size[0]}>
+                                                <td><label>{`Change ${size[0]}`}</label></td>
+                                                <td><select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
+                                                    {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
+                                                </select></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                                <tr>
+                                    <td><label>Annotations visible</label></td>
+                                    <td><input type='checkbox' checked={isAnnotationVisible} onChange={(e) => setAnnotationVisible(e.target.checked)}/></td>
                                 </tr>
-                            )}
-                            { props.model?.parts.length === 1 &&
-                                Object.entries(brickSize).map(size => {
-                                    return (
-                                        <tr key={size[0]}>
-                                            <td><label>{`Change ${size[0]}`}</label></td>
-                                            <td><select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
-                                                {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
-                                            </select></td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                            <tr>
-                                <td><label>Annotations visible</label></td>
-                                <td><input type='checkbox' checked={isAnnotationVisible} onChange={(e) => setAnnotationVisible(e.target.checked)}/></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </motion.div>
-                        }
+                            </tbody>
+                        </table>
+                    </motion.div>
+                }
             </AnimatePresence>
         </div>
     )
