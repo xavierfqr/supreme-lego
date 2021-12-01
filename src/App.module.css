@@ -26,5 +26,5 @@
 }
 
 .canvas:hover {
-  border: 3px solid red;
+  border: 3px solid rgba(0, 217, 255, 0.8);
 }

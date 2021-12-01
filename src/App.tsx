@@ -1,5 +1,4 @@
 import React from 'react';
-import * as THREE from 'three';
 import styles from './App.module.css';
 import ItemContainer from './ItemContainer';
 import HiddenCanvas from './components/HiddenCanvas';
@@ -71,27 +70,35 @@ const modelsData : ModelType[] = [
   },
   {
     index: 4,
-    name: 'brick_thin',
+    name: 'character_male',
     parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+      { label: 'shirt', tags: [ "polySurface1_Red_Mat_0002" ], position: [0, 4.5, 1] },
+      { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ], position: [-3, 4, 0] },
+      { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ], position: [-2.5, 1.5, 0] },
+      { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ], position: [0, 3, 1] },
     ],
-    infos: 'THIN LEGO BRICK'
+    infos: 'LEGO HOMME'
   },
   {
     index: 5,
-    name: 'brick_thin',
+    name: 'character_female',
     parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+      { label: 'hair', tags: ["perrucaLeia_plastic_legoMAT_0"], position: [-2, 7, 0] },
+      { label: 'shirt', tags: [ "cos_leia_smooth_plastic_legoMAT_0" ], position: [0, 4.5, 1] },
+      { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ], position: [-3, 4, 0] },
+      { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ], position: [-2.5, 1.5, 0] },
+      { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0" ], position: [0, 3, 1] },
     ],
-    infos: 'THIN LEGO BRICK'
+    infos: 'LEGO FEMME'
   },
   {
     index: 6,
-    name: 'brick_thin',
+    name: 'brick',
     parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+      { label: 'brick', tags: [ "pCube17_lambert1_0" ], position: [0, 3.5, 0]}
     ],
-    infos: 'THIN LEGO BRICK'
+    infos: 'LEGO BRICK',
+
   },
   {
     index: 7,
@@ -101,62 +108,6 @@ const modelsData : ModelType[] = [
     ],
     infos: 'THIN LEGO BRICK'
   },
-  {
-    index: 8,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 9,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 10,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 11,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 12,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 13,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  },
-  {
-    index: 14,
-    name: 'brick_thin',
-    parts: [
-      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ],
-    infos: 'THIN LEGO BRICK'
-  }
 ];
 
 

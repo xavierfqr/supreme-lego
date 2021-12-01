@@ -33,10 +33,9 @@
   border: 1px solid black;
 }
 
-.arrowRight {
+.arrow {
   cursor: pointer;
   position: absolute;
-  right: 80px;
   top: calc(50% - 25px);
   transition: all 0.2s ease-in-out;
 }
@@ -45,16 +44,22 @@
   transform: scale(1.1);
 }
 
-.arrowRight > img {
+.arrow:hover {
+  opacity: 0.75;
+}
+
+.arrow > img {
   height: 50px;
   width: 50px;
   top: 0;
   left: 0;
 }
 
+.arrowRight {
+  right: 80px;
+}
+
 .arrowLeft {
-  cursor: pointer;
-  position: absolute;
   left: 20px;
   top: calc(50% - 25px);
   transition: all 0.2s ease-in-out;
@@ -65,10 +70,6 @@
 }
 
 .arrowLeft > img {
-  height: 50px;
-  width: 50px;
-  top: 0;
-  left: 0;
   transform: rotate(180deg);
 }
 
@@ -89,6 +90,10 @@
 .backButtonImage {
   margin-left: 10px;
   margin-top: 10px;
+}
+
+.backButtonImage:hover {
+  opacity: 0.75;
 }
 
 .backButton > img {
@@ -113,6 +118,7 @@
 }
 
 .pannel > h2 {
+  color: white;
   font-weight: 900;
   text-decoration: underline;
 }
