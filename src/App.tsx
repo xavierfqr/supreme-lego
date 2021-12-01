@@ -221,7 +221,7 @@ function App() {
     }
   }, [itemsState.isFullList])
 
-  const onCanvasClick = (index: number) => () => {
+  const onCanvasClick = (e: any, index: number) => {
     setItemsState({itemIndex: index, isFullList: false})
   }
 
@@ -229,20 +229,24 @@ function App() {
   return (
     <div className={styles.container}>
       {itemsState.isFullList ?
-      <div>
-        {
-          models.map((model, index) => {
-            return <canvas className={styles.canvas} onClick={onCanvasClick(index)} key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
-          })
-        }
-        <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading} setProgress={setProgress}></HiddenCanvas>
-        {progress !== 100 && <div style={{textAlign: 'center', marginTop:'10rem'}}>
-          <progress max="100" value={progress}></progress>
-          <div>Loading items...</div>
-        </div>}
-      </div>
+        <div>
+          {
+            models.map((model, index) => 
+              <canvas className={styles.canvas} 
+                      onClick={(e) => onCanvasClick(e, index)}
+                      key={model.index} ref={(ref) => setRef(ref, index)}></canvas>
+            )
+          }
+          <HiddenCanvas models={models} modelsRef={modelsRef} setIsLoading={setIsLoading} setProgress={setProgress}></HiddenCanvas>
+          {progress !== 100 && 
+            <div className={styles.loadingModal}>
+              <progress max="100" value={progress}></progress>
+              <div>Loading items...</div>
+            </div>
+          }
+        </div>
       :
-        <ItemContainer model={models[mod(itemsState.itemIndex, models.length)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
+          <ItemContainer model={models[mod(itemsState.itemIndex, models.length)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
       }
     </div>
   );

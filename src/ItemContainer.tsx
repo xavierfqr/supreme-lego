@@ -26,6 +26,7 @@ const ItemContainer = (props : ItemContainerProps) => {
     const [inputColor, setInputColor] = React.useState({hair: 'brown', arms: 'red', legs: 'blue', shirt: 'red', pelvis: 'blue', brick: 'black'});
     const [brickSize, setBrickSize] = React.useState({width: 1, height: 1});
     const [isVisible, setIsVisible] = React.useState(true);
+    const [isAnnotationVisible, setAnnotationVisible] = React.useState(true);
     let scene = React.useRef(new THREE.Scene());
     let camera = React.useRef<THREE.PerspectiveCamera | null>(null);
     let renderer = React.useRef<THREE.WebGLRenderer>();
@@ -36,6 +37,8 @@ const ItemContainer = (props : ItemContainerProps) => {
     let controls : OrbitControls;
     const isIdle = React.useRef(false);
     let idleSettingDelay = setTimeout(() => isIdle.current = true, 2000);
+    const rotationSpeed = React.useRef(1);
+    let rotationSpeedChange : NodeJS.Timeout;
 
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
         const canvas = renderer.domElement; 
@@ -52,7 +55,8 @@ const ItemContainer = (props : ItemContainerProps) => {
     const update = (delta: number) => {
         controls.update();
         if (gltfModelContainer.current && isIdle.current) {
-            gltfModelContainer.current.rotation.y += delta;
+            console.log(rotationSpeed.current);
+            gltfModelContainer.current.rotation.y += delta * rotationSpeed.current;
         }
         if (resizeRendererToDisplaySize(renderer.current!)) {
             const canvas = canvasRef.current;
@@ -71,6 +75,14 @@ const ItemContainer = (props : ItemContainerProps) => {
         requestAnimationFrame(animate);
     };
 
+    React.useEffect(() => {
+        if (gltfModelContainer.current) {
+            const visibility = isAnnotationVisible ? 'visible' : 'hidden';
+            props.model!.parts.forEach(part => {
+                document.getElementById(part.label + '_annotation')!.style.visibility = visibility;
+            });
+        }
+    }, [isAnnotationVisible]);
 
     React.useEffect(() => {
 
@@ -78,9 +90,13 @@ const ItemContainer = (props : ItemContainerProps) => {
         loader.load(
             `assets/gltf/${props.model.name}/scene.gltf`,
             gltf => {
-                gltf.scene.traverse(child => child.castShadow = true);
-                gltf.scene.traverse(child => child.receiveShadow = true);
-                gltf.scene.name = 'item_name';
+                gltf.scene.traverse((child: any) => {
+                    child.castShadow = true
+                    child.receiveShadow = true
+                    if (child.material) {
+                        child.material.transparent = true;
+                    }
+                });
 
                 props.model!.parts.forEach(part => {
                     const div = document.createElement('div');
@@ -91,6 +107,7 @@ const ItemContainer = (props : ItemContainerProps) => {
                     divLabel.position.set(...part.position);
                     gltf.scene.add(divLabel);
                 });
+                setAnnotationVisible(true);
 
                 gltfModelContainer.current = new Object3D();
                 gltfModelContainer.current.add(gltf.scene);
@@ -107,8 +124,16 @@ const ItemContainer = (props : ItemContainerProps) => {
             }   
         );
 
-        setBrickSize({width: 1, height: 1});
+        rotationSpeedChange = setInterval(() => {
+            if (rotationSpeed.current === 1) {
+                clearInterval(rotationSpeedChange);
+            } else {
+                rotationSpeed.current -= 1; 
+            }
+        }, 20);
+        
 
+        setBrickSize({width: 1, height: 1});
         return () => {
             gltfModelContainer.current!.remove(...gltfModelContainer.current!.children);
 
@@ -197,11 +222,25 @@ const ItemContainer = (props : ItemContainerProps) => {
     }
 
     const onArrowRightClick = () => {
-        props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
+        rotationSpeedChange = setInterval(() => {
+            if (rotationSpeed.current === 40) {
+                clearInterval(rotationSpeedChange);
+                props.setItemsState({itemIndex: props.model.index + 1, isFullList: false});
+            } else {
+                rotationSpeed.current += 1;
+            }
+        }, 20); 
     }
 
     const onArrowLeftClick = () => {
-        props.setItemsState({itemIndex: props.model.index - 1, isFullList: false});
+        rotationSpeedChange = setInterval(() => {
+            if (rotationSpeed.current === 40) {
+                clearInterval(rotationSpeedChange);
+                props.setItemsState({itemIndex: props.model.index - 1, isFullList: false});
+            } else {
+                rotationSpeed.current += 1;
+            }
+        }, 20); 
     }
 
     const onCanvasMouseDown = () => {
@@ -322,30 +361,34 @@ const ItemContainer = (props : ItemContainerProps) => {
                     <motion.div className={styles.pannel} variants={panelAppear} 
                                 initial="hidden" animate="visible" exit="exit">
                         <h2>Customization Panel</h2>
-                        {props.model?.parts.map(part =>
-                            <div key={part.label} className={styles.parameters}>
-                                <label>{`Change ${part.label} color`}</label>
-                                <input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
-                            </div>
-                        )}
-                        {
-                                props.model?.parts.length === 1 ?
-                                    Object.entries(brickSize).map(size => {
-                                        return (
-                                            <div key={size[0]} className={styles.parameters}>
-                                                <label>{size[0]}</label>
-                                                <select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
-                                                    {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
-                                                </select>
-                                            </div>
-                                        )
-                                    })
-                                    
-                                :
-                                    null
+                        <table style={{borderSpacing: '1rem'}}>
+                        <tbody>
+                            {props.model?.parts.map(part =>
+                                <tr key={part.label}>
+                                    <td><label>{`Change ${part.label} color`}</label></td>
+                                    <td><input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/></td>
+                                </tr>
+                            )}
+                            { props.model?.parts.length === 1 &&
+                                Object.entries(brickSize).map(size => {
+                                    return (
+                                        <tr key={size[0]}>
+                                            <td><label>{`Change ${size[0]}`}</label></td>
+                                            <td><select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
+                                                {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
+                                            </select></td>
+                                        </tr>
+                                    )
+                                })
                             }
-                    </motion.div>
-                }
+                            <tr>
+                                <td><label>Annotations visible</label></td>
+                                <td><input type='checkbox' checked={isAnnotationVisible} onChange={(e) => setAnnotationVisible(e.target.checked)}/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </motion.div>
+                        }
             </AnimatePresence>
         </div>
     )
