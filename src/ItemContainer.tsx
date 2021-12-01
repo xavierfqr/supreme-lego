@@ -1,8 +1,8 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial, CubeTextureLoader, PMREMGenerator, PointLight, Mesh, SphereGeometry, Vector2, Raycaster, Object3D } from 'three';
+import { DirectionalLight, Clock, CubeTextureLoader, PMREMGenerator, PointLight, Vector2, Raycaster, Object3D } from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import {ModelType, ItemType} from './App';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -31,14 +31,12 @@ const ItemContainer = (props : ItemContainerProps) => {
     let camera = React.useRef<THREE.PerspectiveCamera | null>(null);
     let renderer = React.useRef<THREE.WebGLRenderer>();
     let labelRenderer = React.useRef<CSS2DRenderer>();
-    let mixer : AnimationMixer;
     let gltfModelContainer = React.useRef<THREE.Object3D>();
     const clock = new Clock();
     let controls : OrbitControls;
     const isIdle = React.useRef(false);
     let idleSettingDelay = setTimeout(() => isIdle.current = true, 2000);
     const rotationSpeed = React.useRef(1);
-    let rotationSpeedChange : NodeJS.Timeout;
     const [isLoaded, setIsLoaded] = React.useState(false);
 
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
@@ -122,7 +120,7 @@ const ItemContainer = (props : ItemContainerProps) => {
                     });
                 }
                 setAnnotationVisible(true);
-                rotationSpeedChange = setInterval(() => {
+                const rotationSpeedChange = setInterval(() => {
                     if (rotationSpeed.current === 1) {
                         clearInterval(rotationSpeedChange);
                         setIsLoaded(true);
@@ -223,7 +221,7 @@ const ItemContainer = (props : ItemContainerProps) => {
 
     const modelTransition = (direction: number) => {
         if (isLoaded) {
-            rotationSpeedChange = setInterval(() => {
+            const rotationSpeedChange = setInterval(() => {
                 if (rotationSpeed.current === 40) {
                     clearInterval(rotationSpeedChange);
                     props.setItemsState({itemIndex: props.model.index + direction, isFullList: false});
@@ -340,10 +338,10 @@ const ItemContainer = (props : ItemContainerProps) => {
                             onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp} onDoubleClick={onCanvasDoubleClick}>
                         </canvas>
                         <div>
-                            <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
+                            <div onClick={() => onArrowRightClick()} className={`${styles.arrowRight} ${styles.arrow}`}>
                                 <img src={'right-arrow.png'}></img>
                             </div>
-                            <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
+                            <div onClick={() => onArrowLeftClick()} className={`${styles.arrowLeft} ${styles.arrow}`}>
                                 <img src={'right-arrow.png'}></img>
                             </div>
                         </div>

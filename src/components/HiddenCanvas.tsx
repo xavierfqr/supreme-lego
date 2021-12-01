@@ -1,7 +1,7 @@
 import React from 'react'
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DirectionalLight, AnimationMixer, Clock, TextureLoader } from 'three';
+import { DirectionalLight, TextureLoader } from 'three';
 import { ModelType } from '../App';
 
 interface HiddenCanvasProps {
@@ -13,10 +13,9 @@ interface HiddenCanvasProps {
 
 const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCanvasProps) => {
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
-    let scene : THREE.Scene;
+    let scene = React.useRef(new THREE.Scene());
     let camera : THREE.PerspectiveCamera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 2000 );
     let renderer = React.useRef<THREE.WebGLRenderer>();
-    const clock = new Clock();
 
     function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
         const canvas = renderer.domElement;
@@ -30,7 +29,6 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
     }
 
     const animate = () => {
-        let delta = clock.getDelta();
         requestAnimationFrame(animate);
         if (resizeRendererToDisplaySize(renderer.current!)) {
             const canvas = canvasRef.current;
@@ -47,23 +45,22 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
             }
         }
 
-        renderer.current!.render( scene, camera );
+        renderer.current!.render( scene.current, camera );
     };
 
     React.useEffect(() => {
-        scene = new THREE.Scene();
+        scene.current = new THREE.Scene();
         renderer.current = new THREE.WebGLRenderer({canvas: canvasRef.current!, antialias: true, preserveDrawingBuffer: true} );
         
-
         const loader = new GLTFLoader();
 
-        models.map(model => {
+        models.forEach(model => {
             loader.load(
                 `assets/gltf/${model.name}/scene.gltf`,
                 gltf => {
                     gltf.scene.position.y = -4;
                     gltf.scene.position.x = -30 * model.index;
-                    scene.add(gltf.scene);
+                    scene.current.add(gltf.scene);
                 }
             )
         })
@@ -75,13 +72,13 @@ const HiddenCanvas = ({models, modelsRef, setIsLoading, setProgress} : HiddenCan
         light.intensity = 1;
 
         camera.position.z = 10;
-        scene.background = texture;
+        scene.current.background = texture;
 
-        scene.add(light, light.target);
+        scene.current.add(light, light.target);
 
         animate();
 
-    }, [])
+    }, []);
 
     React.useEffect(() => {
         if (!camera) return;
