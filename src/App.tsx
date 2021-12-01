@@ -50,7 +50,7 @@ const modelsData : ModelType[] = [
       { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ], position: [-2.5, 1.5, 0] },
       { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0" ], position: [0, 3, 1] },
     ],
-    infos: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi earum voluptate quidem dolorum placeat omnis laboriosam est autem, libero quisquam sint suscipit, quis repudiandae quam enim quia. Libero, reiciendis perferendis.'
+    infos: 'LEGO FEMME'
   },
   {
     index: 2,
@@ -242,9 +242,7 @@ function App() {
         </div>}
       </div>
       :
-      <div>
         <ItemContainer model={models[mod(itemsState.itemIndex, models.length)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
-      </div>
       }
     </div>
   );

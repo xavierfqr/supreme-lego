@@ -8,7 +8,7 @@ import {ModelType, ItemType} from './App';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import { canvasAppear, panelAppear } from './utils/animations';
+import { canvasAppear, infosAppear, panelAppear } from './utils/animations';
 
 interface ItemContainerProps {
     setItemsState: any,
@@ -25,6 +25,7 @@ const ItemContainer = (props : ItemContainerProps) => {
 
     const [inputColor, setInputColor] = React.useState({hair: 'brown', arms: 'red', legs: 'blue', shirt: 'red', pelvis: 'blue', brick: 'black'});
     const [brickSize, setBrickSize] = React.useState({width: 1, height: 1});
+    const [isVisible, setIsVisible] = React.useState(true);
     let scene = React.useRef(new THREE.Scene());
     let camera = React.useRef<THREE.PerspectiveCamera | null>(null);
     let renderer = React.useRef<THREE.WebGLRenderer>();
@@ -70,13 +71,6 @@ const ItemContainer = (props : ItemContainerProps) => {
         requestAnimationFrame(animate);
     };
 
-    // React.useEffect(() => {
-    //     if (gltfModelContainer.current) {
-    //         props.model!.parts.forEach(part => {
-    //             document.getElementById(part.label + '_annotation')!.style.color = inputColor[part.label];
-    //         });
-    //     }
-    // }, [inputColor]);
 
     React.useEffect(() => {
 
@@ -244,8 +238,11 @@ const ItemContainer = (props : ItemContainerProps) => {
     }
 
     const onBackButtonClick = () => {
-        props.setItemsState({itemIndex: props.itemsState.index, isFullList: true})
-        props.setProgress(0);
+        setIsVisible(false);
+        setTimeout(() => {
+            props.setItemsState({itemIndex: props.itemsState.index, isFullList: true})
+            props.setProgress(0);
+        }, 1000)
     }
 
     React.useEffect(() => {
@@ -291,54 +288,64 @@ const ItemContainer = (props : ItemContainerProps) => {
 
     return (
         <div className={styles.container}>
-            <div style={{position:'relative'}}>
-                <div className={styles.backButton} onClick={() => onBackButtonClick()}>
-                    <img src='arrow.png'></img>
-                </div>
-                <motion.canvas variants={canvasAppear}
-                    initial="hidden" animate="visible" exit="exit"
-                    ref={canvasRef} className={`${styles.canvas} ${styles.big}`} 
-                    onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp} onDoubleClick={onCanvasDoubleClick}>
-                </motion.canvas>
-                <div>
-                    <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
-                        <img src={'right-arrow.png'}></img>
-                    </div>
-                    <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
-                        <img src={'right-arrow.png'}></img>
-                    </div>
-                </div>
+            <div className={styles.backButton}>
+                <img className={styles.backButtonImage} onClick={() => onBackButtonClick()} src='arrow.png'></img>
             </div>
             <AnimatePresence>
-                <motion.div className={styles.pannel} variants={panelAppear} 
+                {isVisible &&
+                <div className={styles.middle}>
+                    <motion.div style={{position:'relative'}} variants={canvasAppear}
                             initial="hidden" animate="visible" exit="exit">
-                    {props.model?.parts.map(part =>
-                        <div key={part.label}>
-                            <label>{`Change ${part.label} color`}</label>
-                            <input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
+                        <canvas
+                            ref={canvasRef} className={`${styles.canvas}`} 
+                            onMouseDown={onCanvasMouseDown} onMouseUp={onCanvasMouseUp} onDoubleClick={onCanvasDoubleClick}>
+                        </canvas>
+                        <div>
+                            <div onClick={() => onArrowRightClick()} className={styles.arrowRight}>
+                                <img src={'right-arrow.png'}></img>
+                            </div>
+                            <div onClick={() => onArrowLeftClick()} className={styles.arrowLeft}>
+                                <img src={'right-arrow.png'}></img>
+                            </div>
                         </div>
-                    )}
-                    {
-                            props.model?.parts.length === 1 ?
-                                Object.entries(brickSize).map(size => {
-                                    return (
-                                        <div key={size[0]}>
-                                            <label>{size[0]}</label>
-                                            <select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
-                                                {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
-                                            </select>
-                                        </div>
-                                    )
-                                })
-                                
-                            :
-                                null
-                        }
-                </motion.div>
-                <motion.div className={styles.infos}>
-                    <h2>Informations</h2>
-                    <div>{props.model.infos}</div>
-                </motion.div>
+                    </motion.div>
+                    <motion.div className={styles.infos} variants={infosAppear} 
+                        initial="hidden" animate="visible" exit="exit">
+                        <h2>Informations</h2>
+                        <div>{props.model.infos}</div>
+                    </motion.div>
+                </div>
+                }
+            </AnimatePresence>
+            <AnimatePresence>
+                {isVisible &&
+                    <motion.div className={styles.pannel} variants={panelAppear} 
+                                initial="hidden" animate="visible" exit="exit">
+                        <h2>Customization Panel</h2>
+                        {props.model?.parts.map(part =>
+                            <div key={part.label} className={styles.parameters}>
+                                <label>{`Change ${part.label} color`}</label>
+                                <input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
+                            </div>
+                        )}
+                        {
+                                props.model?.parts.length === 1 ?
+                                    Object.entries(brickSize).map(size => {
+                                        return (
+                                            <div key={size[0]} className={styles.parameters}>
+                                                <label>{size[0]}</label>
+                                                <select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
+                                                    {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
+                                                </select>
+                                            </div>
+                                        )
+                                    })
+                                    
+                                :
+                                    null
+                            }
+                    </motion.div>
+                }
             </AnimatePresence>
         </div>
     )
