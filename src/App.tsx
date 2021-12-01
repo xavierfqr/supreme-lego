@@ -24,7 +24,7 @@ interface ModelPartType {
   position: [number, number, number]
 }
 
-export type ItemType = 'arms' | 'legs' | 'shirt' | 'pelvis' | 'brick';
+export type ItemType = 'hair' | 'arms' | 'legs' | 'shirt' | 'pelvis' | 'brick';
 
 
 
@@ -44,6 +44,7 @@ const modelsData : ModelType[] = [
     index: 1,
     name: 'character_female',
     parts: [
+      { label: 'hair', tags: ["perrucaLeia_plastic_legoMAT_0"], position: [-2, 7, 0] },
       { label: 'shirt', tags: [ "cos_leia_smooth_plastic_legoMAT_0" ], position: [0, 4.5, 1] },
       { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ], position: [-3, 4, 0] },
       { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ], position: [-2.5, 1.5, 0] },
@@ -55,9 +56,10 @@ const modelsData : ModelType[] = [
     index: 2,
     name: 'brick',
     parts: [
-      { label: 'brick', tags: [ "Base002" ], position: [0, 3.5, 0]}
+      { label: 'brick', tags: [ "pCube17_lambert1_0" ], position: [0, 3.5, 0]}
     ],
-    infos: 'LEGO BRICK'
+    infos: 'LEGO BRICK',
+
   },
   {
     index: 3,
@@ -241,7 +243,7 @@ function App() {
       </div>
       :
       <div>
-        <ItemContainer model={models[mod(itemsState.itemIndex, itemsCount)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
+        <ItemContainer model={models[mod(itemsState.itemIndex, models.length)]} itemsState={itemsState} setItemsState={setItemsState} setProgress={setProgress}></ItemContainer>
       </div>
       }
     </div>

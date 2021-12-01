@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import * as THREE from 'three';
 import styles from "./ItemContainer.module.css";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial, CubeTextureLoader, PMREMGenerator, PointLight, Mesh, SphereGeometry, Vector2, Raycaster } from 'three';
+import { AmbientLight, DirectionalLight, AnimationMixer, Clock, TextureLoader, MeshStandardMaterial, CubeTextureLoader, PMREMGenerator, PointLight, Mesh, SphereGeometry, Vector2, Raycaster, Object3D } from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import {ModelType, ItemType} from './App';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -17,19 +17,20 @@ interface ItemContainerProps {
     setProgress: Function
 }
 
-
+type SizeType = 'height' | 'width';
 
 const ItemContainer = (props : ItemContainerProps) => {
 
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-    const [inputColor, setInputColor] = React.useState({arms: 'white', legs: 'white', shirt: 'white', pelvis: 'white', brick: 'white'});
+    const [inputColor, setInputColor] = React.useState({hair: 'brown', arms: 'red', legs: 'blue', shirt: 'red', pelvis: 'blue', brick: 'black'});
+    const [brickSize, setBrickSize] = React.useState({width: 1, height: 1});
     let scene = React.useRef(new THREE.Scene());
     let camera = React.useRef<THREE.PerspectiveCamera | null>(null);
     let renderer = React.useRef<THREE.WebGLRenderer>();
     let labelRenderer = React.useRef<CSS2DRenderer>();
     let mixer : AnimationMixer;
-    let gltfModel = React.useRef<THREE.Group>();
+    let gltfModelContainer = React.useRef<THREE.Object3D>();
     const clock = new Clock();
     let controls : OrbitControls;
     const isIdle = React.useRef(false);
@@ -48,10 +49,9 @@ const ItemContainer = (props : ItemContainerProps) => {
     }
 
     const update = (delta: number) => {
-        // mixer?.update(delta);
         controls.update();
-        if (gltfModel.current && isIdle.current) {
-            gltfModel.current.rotation.y += delta;
+        if (gltfModelContainer.current && isIdle.current) {
+            gltfModelContainer.current.rotation.y += delta;
         }
         if (resizeRendererToDisplaySize(renderer.current!)) {
             const canvas = canvasRef.current;
@@ -70,24 +70,20 @@ const ItemContainer = (props : ItemContainerProps) => {
         requestAnimationFrame(animate);
     };
 
-    React.useEffect(() => {
-        if (gltfModel.current) {
-            props.model!.parts.forEach(part => {
-                document.getElementById(part.label + '_annotation')!.style.color = inputColor[part.label];
-            });
-        }
-    }, [inputColor]);
+    // React.useEffect(() => {
+    //     if (gltfModelContainer.current) {
+    //         props.model!.parts.forEach(part => {
+    //             document.getElementById(part.label + '_annotation')!.style.color = inputColor[part.label];
+    //         });
+    //     }
+    // }, [inputColor]);
 
     React.useEffect(() => {
-        const currentItem = gltfModel.current?.getObjectByName('item_name')!;
-        const parent = currentItem?.parent;
-        parent?.remove(currentItem);
 
         const loader = new GLTFLoader();
         loader.load(
             `assets/gltf/${props.model.name}/scene.gltf`,
             gltf => {
-                mixer = new AnimationMixer(gltf.scene);
                 gltf.scene.traverse(child => child.castShadow = true);
                 gltf.scene.traverse(child => child.receiveShadow = true);
                 gltf.scene.name = 'item_name';
@@ -102,18 +98,25 @@ const ItemContainer = (props : ItemContainerProps) => {
                     gltf.scene.add(divLabel);
                 });
 
-                gltfModel.current = gltf.scene;
-                scene.current.add(gltf.scene)
-                gltf.animations.forEach(element => {
-                    mixer.clipAction(element).play();
-                });
+                gltfModelContainer.current = new Object3D();
+                gltfModelContainer.current.add(gltf.scene);
+                scene.current.add(gltfModelContainer.current);
+
+                if (props.model.parts.length === 1) {
+                    const material = new THREE.MeshStandardMaterial( { color: '#000000' } );
+                    gltf.scene.traverse((child: any) => {
+                        if (child.material && props.model.parts[0].tags.includes(child.name)) {
+                            child.material = material;
+                        }
+                    });
+                }
             }   
         );
 
+        setBrickSize({width: 1, height: 1});
+
         return () => {
-            const currentItem = gltfModel.current?.getObjectByName('item_name')!;
-            const parent = currentItem?.parent;
-            parent?.remove(currentItem);
+            gltfModelContainer.current!.remove(...gltfModelContainer.current!.children);
 
             labelRenderer.current!.domElement.innerHTML = '';
         }
@@ -186,7 +189,7 @@ const ItemContainer = (props : ItemContainerProps) => {
 
     const onColorChange = (e : any, item: ItemType) => {
         const material = new THREE.MeshStandardMaterial( { color: e.target.value} );
-        gltfModel.current!.traverse((child: any) => {
+        gltfModelContainer.current!.traverse((child: any) => {
             if (child.material) {
                 const res = props.model!.parts.filter(part => part.label === item && part.tags.includes(child.name)).length
                 if (res > 0) {
@@ -245,6 +248,47 @@ const ItemContainer = (props : ItemContainerProps) => {
         props.setProgress(0);
     }
 
+    React.useEffect(() => {
+        if (gltfModelContainer.current) {
+            gltfModelContainer.current!.remove(...gltfModelContainer.current!.children);
+
+            console.log(brickSize);
+            const material = new THREE.MeshStandardMaterial( { color: inputColor['brick']} );
+            const loader = new GLTFLoader();
+
+            Array.from(Array(brickSize.height).keys()).forEach(x => {
+                Array.from(Array(brickSize.width).keys()).forEach(z => {
+                    loader.load(
+                        `assets/gltf/${props.model.name}/scene.gltf`,
+                        gltf => {
+                            gltf.scene.traverse(child => child.castShadow = true);
+                            gltf.scene.traverse(child => child.receiveShadow = true);
+                            gltf.scene.position.set((x - brickSize.height / 2) * 2 + 1, 0, (z - brickSize.width / 2) * 2 + 1);
+                            gltf.scene.traverse((child: any) => {
+                                if (child.material) {
+                                    const res = props.model!.parts.filter(part => part.label === props.model.parts[0].label && part.tags.includes(child.name)).length
+                                    if (res > 0) {
+                                        child.material = material
+                                    }
+                                }
+                            });
+                            gltfModelContainer.current!.add(gltf.scene);
+                        }
+                    );
+                });
+            });
+        }
+    }, [brickSize]);
+
+    const onChangeSize = (e: any, size: SizeType) => {
+        const newValue = parseInt(e.target.value);
+        if (size === 'width') {
+            setBrickSize({width: newValue, height: brickSize.height});
+        } else {
+            setBrickSize({width: brickSize.width, height: newValue});
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div style={{position:'relative'}}>
@@ -265,32 +309,31 @@ const ItemContainer = (props : ItemContainerProps) => {
                     </div>
                 </div>
             </div>
-
             <AnimatePresence>
                 <motion.div className={styles.pannel} variants={panelAppear} 
                             initial="hidden" animate="visible" exit="exit">
                     {props.model?.parts.map(part =>
                         <div key={part.label}>
                             <label>{`Change ${part.label} color`}</label>
-                            <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
+                            <input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
                         </div>
                     )}
                     {
-                        props.model?.parts.length === 1 ?
-                            ['width', 'height'].map(size => {
-                                return (
-                                    <>
-                                        <label>{size}</label>
-                                        <select>
-                                            {Array.from(Array(10).keys()).map(x => x++).map(i => <option>{i}</option>)}
-                                        </select>
-                                    </>
-                                )
-                            })
-                            
-                        :
-                            null
-                    }
+                            props.model?.parts.length === 1 ?
+                                Object.entries(brickSize).map(size => {
+                                    return (
+                                        <div key={size[0]}>
+                                            <label>{size[0]}</label>
+                                            <select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
+                                                {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
+                                            </select>
+                                        </div>
+                                    )
+                                })
+                                
+                            :
+                                null
+                        }
                 </motion.div>
                 <motion.div className={styles.infos}>
                     <h2>Informations</h2>
