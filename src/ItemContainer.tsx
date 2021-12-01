@@ -312,28 +312,28 @@ const ItemContainer = (props : ItemContainerProps) => {
             <AnimatePresence>
                 <motion.div className={styles.pannel} variants={panelAppear} 
                             initial="hidden" animate="visible" exit="exit">
-                    {props.model?.parts.map(part =>
-                        <div key={part.label}>
-                            <label>{`Change ${part.label} color`}</label>
-                            <input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
-                        </div>
-                    )}
-                    {
-                            props.model?.parts.length === 1 ?
+                    <table>
+                        <tbody>
+                            {props.model?.parts.map(part =>
+                                <tr key={part.label}>
+                                    <td><label>{`Change ${part.label} color`}</label></td>
+                                    <td><input type="color" className={styles.colorPicker} value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/></td>
+                                </tr>
+                            )}
+                            { props.model?.parts.length === 1 &&
                                 Object.entries(brickSize).map(size => {
                                     return (
-                                        <div key={size[0]}>
-                                            <label>{size[0]}</label>
-                                            <select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
+                                        <tr key={size[0]}>
+                                            <td><label>{`Change ${size[0]}`}</label></td>
+                                            <td><select value={size[1]} onChange={(e) => onChangeSize(e, size[0] as SizeType)}>
                                                 {Array.from(Array(8).keys()).map(x => x + 1).map(i => <option key={i} value={i}>{i}</option>)}
-                                            </select>
-                                        </div>
+                                            </select></td>
+                                        </tr>
                                     )
                                 })
-                                
-                            :
-                                null
-                        }
+                            }
+                        </tbody>
+                    </table>
                 </motion.div>
                 <motion.div className={styles.infos}>
                     <h2>Informations</h2>
