@@ -56,7 +56,6 @@ const ItemContainer = (props : ItemContainerProps) => {
     const update = (delta: number) => {
         controls.update();
         if (gltfModelContainer.current && isIdle.current) {
-            console.log(rotationSpeed.current);
             gltfModelContainer.current.rotation.y += delta * rotationSpeed.current;
         }
         if (resizeRendererToDisplaySize(renderer.current!)) {
@@ -77,10 +76,12 @@ const ItemContainer = (props : ItemContainerProps) => {
     };
 
     React.useEffect(() => {
+        console.log('pass here');
         if (gltfModelContainer.current) {
             const visibility = isAnnotationVisible ? 'visible' : 'hidden';
             props.model!.parts.forEach(part => {
-                document.getElementById(part.label + '_annotation')!.style.visibility = visibility;
+                const elem = document.getElementById(part.label + '_annotation');
+                if (elem) elem.style.visibility = visibility;
             });
         }
     }, [isAnnotationVisible]);
@@ -288,7 +289,6 @@ const ItemContainer = (props : ItemContainerProps) => {
         if (gltfModelContainer.current) {
             gltfModelContainer.current!.remove(...gltfModelContainer.current!.children);
 
-            console.log(brickSize);
             const material = new THREE.MeshStandardMaterial( { color: inputColor['brick']} );
             const loader = new GLTFLoader();
 

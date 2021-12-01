@@ -19,10 +19,6 @@
   width: 50rem;
 }
 
-.canvas:hover {
-  border-color: rgba(0, 0, 0, 0.5);
-}
-
 .label_renderer {
   position: absolute;
   top: 0;
@@ -42,6 +38,11 @@
   position: absolute;
   right: 80px;
   top: calc(50% - 25px);
+  transition: all 0.2s ease-in-out;
+}
+
+.arrowRight:hover {
+  transform: scale(1.1);
 }
 
 .arrowRight > img {
@@ -56,6 +57,11 @@
   position: absolute;
   left: 20px;
   top: calc(50% - 25px);
+  transition: all 0.2s ease-in-out;
+}
+
+.arrowLeft:hover {
+  transform: scale(1.1);
 }
 
 .arrowLeft > img {
@@ -69,6 +75,15 @@
 .backButton {
   height: 100vh;
   width: 100px;
+}
+
+.backButton > img:hover {
+  transform: translateX(-7px);
+}
+
+.backButton > img {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .backButtonImage {
@@ -89,15 +104,26 @@
   align-items: center;
   text-align: center;
   align-items: center;
-  background-color: rgb(255, 207, 0);
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 217, 255, 1),
+    10%,
+    lightblue
+  );
 }
 
-/* .pannel {
-
-} */
+.pannel > h2 {
+  font-weight: 900;
+  text-decoration: underline;
+}
 
 .infos {
-  background-color: black;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 217, 255, 1),
+    10%,
+    lightblue
+  );
   justify-self: flex-end;
   padding: 1rem;
   color: white;
@@ -121,6 +147,7 @@ label {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   color: white;
+  font-style: italic;
 }
 
 .colorPicker {

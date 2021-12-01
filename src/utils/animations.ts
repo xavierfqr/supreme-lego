@@ -6,7 +6,7 @@ const panelAppear = {
         x: "0%",
         transition: {
             type: "spring",
-            damping: 25,
+            damping: 50,
             stiffness: 200
         }
     },
@@ -14,7 +14,7 @@ const panelAppear = {
         x: "100%",
         transition: {
             type: "spring",
-            damping: 25,
+            damping: 50,
             stiffness: 200
         }
     }
@@ -46,7 +46,7 @@ const infosAppear = {
         y: "0%",
         transition: {
             type: "spring",
-            damping: 25,
+            damping: 50,
             stiffness: 200
         }
     },
@@ -54,7 +54,7 @@ const infosAppear = {
         y: "100%",
         transition: {
             type: "spring",
-            damping: 25,
+            damping: 50,
             stiffness: 200
         }
     }
