@@ -14,7 +14,8 @@ interface itemsStateType {
 export interface ModelType {
   index: number,
   name: string,
-  parts: ModelPartType[]
+  parts: ModelPartType[],
+  infos: string
 }
 
 interface ModelPartType {
@@ -36,7 +37,8 @@ const modelsData : ModelType[] = [
       { label: 'arms', tags: [ "Arm_Right_Red_Mat_0002", "Arm_Left_Red_Mat_0002" ], position: [-3, 4, 0] },
       { label: 'legs', tags: [ "Leg1_Blue_Mat_0002" , "Leg2_Blue_Mat_0002" ], position: [-2.5, 1.5, 0] },
       { label: 'pelvis', tags: [ "Pelvis1_Blue_Mat_0002" ], position: [0, 3, 1] },
-    ]
+    ],
+    infos: 'LEGO HOMME'
   },
   {
     index: 1,
@@ -46,21 +48,112 @@ const modelsData : ModelType[] = [
       { label: 'arms', tags: [ "brasEsqLeiaSmooth_plastic_legoMAT_0", "brasDretLeiasmooth_plastic_legoMAT_0" ], position: [-3, 4, 0] },
       { label: 'legs', tags: [ "camaEsq_lowLeia_plastic_legoMAT_0" , "camaDreta_lowLeia_plastic_legoMAT_0" ], position: [-2.5, 1.5, 0] },
       { label: 'pelvis', tags: [ "entrecuixleia_plastic_legoMAT_0", "caderaleia_plastic_legoMAT_0" ], position: [0, 3, 1] },
-    ]
+    ],
+    infos: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi earum voluptate quidem dolorum placeat omnis laboriosam est autem, libero quisquam sint suscipit, quis repudiandae quam enim quia. Libero, reiciendis perferendis.'
   },
   {
     index: 2,
     name: 'brick',
     parts: [
       { label: 'brick', tags: [ "Base002" ], position: [0, 3.5, 0]}
-    ]
+    ],
+    infos: 'LEGO BRICK'
   },
   {
     index: 3,
     name: 'brick_thin',
     parts: [
       { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
-    ]
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 4,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 5,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 6,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 7,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 8,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 9,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 10,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 11,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 12,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 13,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
+  },
+  {
+    index: 14,
+    name: 'brick_thin',
+    parts: [
+      { label: 'brick', tags: [ "pCylinder4_lambert1_0" ], position: [0, 3.5, 0]}
+    ],
+    infos: 'THIN LEGO BRICK'
   }
 ];
 

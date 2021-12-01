@@ -103,6 +103,30 @@
   /* background: linear-gradient(to right, #e66465, #9198e5); */
 }
 
+.infos {
+  background-color: black;
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  right: 20%;
+  padding: 1rem;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.infos > div {
+  font-style: italic;
+  padding-bottom: 1rem;
+}
+
+.infos > h2 {
+  padding: 0;
+  text-decoration: underline;
+  margin-block: 0;
+  margin-bottom: 1rem;
+}
+
 label {
   margin-top: 1rem;
   margin-bottom: 0.5rem;

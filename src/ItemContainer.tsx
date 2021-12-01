@@ -8,7 +8,7 @@ import {ModelType, ItemType} from './App';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-
+import { canvasAppear, panelAppear } from './utils/animations';
 
 interface ItemContainerProps {
     setItemsState: any,
@@ -17,44 +17,6 @@ interface ItemContainerProps {
     setProgress: Function
 }
 
-
-const panelAppear = {
-    hidden: {
-        x: "100%",
-    },
-    visible: {
-        x: "0%",
-        transition: {
-            duration: 5,
-            type: "spring",
-            damping: 25,
-            stiffness: 200
-        }
-    },
-    exit: {
-        x: "100%",
-        transition: {
-            type: "spring",
-            damping: 25,
-            stiffness: 200
-        }
-    }
-}
-
-const canvasAppear = {
-    hidden: {
-        opacity: 0
-    },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 2
-        }
-    },
-    exit: {
-        opacity: 0
-    }
-}
 
 
 const ItemContainer = (props : ItemContainerProps) => {
@@ -305,33 +267,35 @@ const ItemContainer = (props : ItemContainerProps) => {
             </div>
 
             <AnimatePresence>
-                <div>
-                    <motion.div className={styles.pannel} variants={panelAppear} 
-                                initial="hidden" animate="visible" exit="exit">
-                        {props.model?.parts.map(part => 
-                            <div key={part.label}>
-                                <label>{`Change ${part.label} color`}</label>
-                                <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
-                            </div>
-                        )}
-                        {
-                            props.model?.parts.length === 1 ?
-                                ['width', 'height'].map(size => {
-                                    return (
-                                        <>
-                                            <label>{size}</label>
-                                            <select>
-                                                {Array.from(Array(10).keys()).map(x => x++).map(i => <option>{i}</option>)}
-                                            </select>
-                                        </>
-                                    )
-                                })
-                                
-                            :
-                                null
-                        }
-                    </motion.div>
-                </div>
+                <motion.div className={styles.pannel} variants={panelAppear} 
+                            initial="hidden" animate="visible" exit="exit">
+                    {props.model?.parts.map(part =>
+                        <div key={part.label}>
+                            <label>{`Change ${part.label} color`}</label>
+                            <input type="color" value={inputColor[part.label]} onChange={(e) => onColorChange(e, part.label)}/>
+                        </div>
+                    )}
+                    {
+                        props.model?.parts.length === 1 ?
+                            ['width', 'height'].map(size => {
+                                return (
+                                    <>
+                                        <label>{size}</label>
+                                        <select>
+                                            {Array.from(Array(10).keys()).map(x => x++).map(i => <option>{i}</option>)}
+                                        </select>
+                                    </>
+                                )
+                            })
+                            
+                        :
+                            null
+                    }
+                </motion.div>
+                <motion.div className={styles.infos}>
+                    <h2>Informations</h2>
+                    <div>{props.model.infos}</div>
+                </motion.div>
             </AnimatePresence>
         </div>
     )

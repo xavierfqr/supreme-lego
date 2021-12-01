@@ -1,7 +1,11 @@
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
-  background: #e66465;
+  /* background: #e66465; */
+  background-size: 100%;
+  background-image: url("./background_supreme_lego.png");
+  background-repeat: repeat-y;
+  width: 100%;
 }
 
 img {
